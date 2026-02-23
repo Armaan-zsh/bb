@@ -11,26 +11,24 @@
   padding: 0;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
-  --bg: #0a0a0e;
-  --background: #0a0a0e;
-  --surface: #16161a;
-  --surface-2: #1c1c21;
-  --surface-warm: #1a1917;
-  /* Warmer for reader */
-  --accent: #0071e3;
-  /* Apple Blue */
-  --accent-dim: #005bb5;
-  --border: #2c2c2e;
+  --bg: #050505;
+  --surface: #0a0a0a;
+  --surface-2: #141414;
+  --border: #1a1a1a;
+  --border-strong: #2a2a2a;
   --text: #ffffff;
-  --text-muted: #e1e1e6;
-  --text-faint: #8e8e93;
-  --tag-bg: #111111;
-  --radius-sm: 8px;
-  --radius-md: 12px;
+  --text-muted: #a1a1a1;
+  --text-faint: #555;
+  --accent: #0071e3;
+  --accent-soft: rgba(0, 113, 227, 0.15);
+  --radius-sm: 6px;
+  --radius-md: 10px;
   --radius-lg: 16px;
-  --font-sans: var(--font-inter, 'Inter', system-ui, -apple-system, sans-serif);
-  --font-mono: var(--font-mono, 'Geist Mono', 'SF Mono', monospace);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'Geist Mono', 'SF Mono', monospace;
 }
 
 html {
@@ -86,12 +84,11 @@ a {
 .site-header {
   border-bottom: 1px solid var(--border);
   padding: 8px 0;
-  /* Reduced from 16px */
   position: sticky;
   top: 0;
-  background: rgba(10, 10, 12, 0.8);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: rgba(5, 5, 5, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   z-index: 100;
 }
 
@@ -172,27 +169,41 @@ a {
 
 /* ── TIME GROUPS ────────────────────────────────────────── */
 
-.time-group {
-  margin-bottom: 48px;
+.posts-stack {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 16px;
 }
 
-.group-label {
-  font-size: 11px;
-  font-weight: 600;
+.group-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.group-count {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-faint);
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 
-.group-label::after {
-  content: "";
-  height: 1px;
-  background: var(--border);
-  flex: 1;
+.pulse-bar-wrapper {
+  margin-top: 24px;
+}
+
+.pulse-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 /* ── NAV TABS ───────────────────────────────────────────── */
@@ -368,56 +379,74 @@ a {
 /* ── POST LIST ITEM ─────────────────────────────────────── */
 
 .post-card {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--border);
-  border-radius: 0;
-  padding: 24px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.post-card:last-child {
-  border-bottom: none;
+.post-card:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.7);
+}
+
+.post-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background: var(--accent);
+  transition: height 0.2s ease;
+}
+
+.post-card:hover::after {
+  height: 100%;
 }
 
 .post-card-meta {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  margin-bottom: 4px;
 }
 
 .post-source {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--accent);
-  font-family: var(--font-mono);
   white-space: nowrap;
 }
 
 .post-date {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-faint);
-  font-family: var(--font-mono);
-  flex-shrink: 0;
+  font-weight: 500;
 }
 
 .post-title {
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-size: 15px;
+  font-weight: 700;
   line-height: 1.4;
   color: var(--text);
-  max-width: 800px;
+  margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .post-title:hover {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
+  color: var(--accent);
 }
 
 .post-excerpt {

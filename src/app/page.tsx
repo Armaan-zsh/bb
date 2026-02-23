@@ -134,14 +134,16 @@ export default function HomePage() {
 
           {/* Pulse Bar */}
           {trending.length > 0 && !debouncedQuery && (
-            <div className="pulse-bar">
-              <span className="pulse-label">TRENDING PULSE:</span>
-              <div className="pulse-tags">
-                {trending.map(tag => (
-                  <button key={tag} className="pulse-tag" onClick={() => setQuery(tag)}>
-                    {tag}
-                  </button>
-                ))}
+            <div className="pulse-bar-wrapper">
+              <div className="pulse-bar">
+                <span className="pulse-label">SIGNAL TRENDS</span>
+                <div className="pulse-tags">
+                  {trending.map(tag => (
+                    <button key={tag} className="pulse-tag" onClick={() => setQuery(tag)}>
+                      #{tag}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -190,8 +192,11 @@ export default function HomePage() {
             <div className="feed-container">
               {groupPosts(posts).map(group => (
                 <section key={group.label} className="time-group">
-                  <h3 className="group-label">{group.label}</h3>
-                  <div className="posts-grid">
+                  <div className="group-header">
+                    <h3 className="group-label">{group.label}</h3>
+                    <span className="group-count">{group.posts.length} entries</span>
+                  </div>
+                  <div className="posts-stack">
                     {group.posts.map(post => (
                       <PostCard
                         key={post.id}

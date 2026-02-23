@@ -86,7 +86,6 @@ export default function WideFeedPage() {
                     )}
                 </div>
             </main>
-            <Footer />
 
             {readingPost && (
                 <ReaderModal

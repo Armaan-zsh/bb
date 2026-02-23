@@ -170,7 +170,6 @@ export default function HomePage() {
           )}
         </div>
       </main>
-      <Footer sourceCount={stats?.sourceCount} postCount={stats?.postCount} />
 
       {readingPost && (
         <ReaderModal

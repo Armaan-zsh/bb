@@ -112,11 +112,11 @@ export default function HomePage() {
             {stats && (
               <div className="hero-stats">
                 <div className="stat-item">
-                  <span className="stat-value">{stats.postCount.toLocaleString()}</span>
+                  <span className="stat-value">{(stats.postCount || 0).toLocaleString()}</span>
                   <span className="stat-label">Posts</span>
                 </div>
                 <div className="stat-item">
-                  <span className="stat-value">{stats.sourceCount}</span>
+                  <span className="stat-value">{stats.sourceCount || 0}</span>
                   <span className="stat-label">Sources</span>
                 </div>
                 <div className="stat-item">

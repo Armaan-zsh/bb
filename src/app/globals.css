@@ -12,20 +12,20 @@
 }
 
 :root {
-  --bg: #0a0a0a;
-  --surface: #111111;
-  --surface-2: #191919;
-  --border: #242424;
-  --text: #ebebeb;
-  --text-muted: #888888;
-  --text-faint: #555555;
-  --accent: #2563eb;
-  --accent-dim: #1d4ed8;
-  --tag-bg: #1a1a1a;
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --font-sans: var(--font-sans, 'Geist', system-ui, -apple-system, sans-serif);
+  --bg: #050505;
+  --surface: #0d0d0d;
+  --surface-2: #151515;
+  --border: #222222;
+  --text: #ffffff;
+  --text-muted: #a0a0a0;
+  --text-faint: #666666;
+  --accent: #3b82f6;
+  --accent-dim: #2563eb;
+  --tag-bg: #111111;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --font-sans: var(--font-inter, 'Inter', system-ui, -apple-system, sans-serif);
   --font-mono: var(--font-mono, 'Geist Mono', 'SF Mono', monospace);
 }
 
@@ -173,28 +173,28 @@ a {
 /* ── HERO ───────────────────────────────────────────────── */
 
 .hero {
-  padding: 56px 0 40px;
+  padding: 80px 0 64px;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 }
 
 .hero-eyebrow {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-faint);
-  margin-bottom: 12px;
-  font-family: var(--font-mono);
+  color: var(--accent);
+  margin-bottom: 16px;
+  display: block;
 }
 
 .hero-title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
   color: var(--text);
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .hero-title em {
@@ -309,12 +309,12 @@ a {
 }
 
 .post-source {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--text-faint);
-  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -328,10 +328,10 @@ a {
 }
 
 .post-title {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.35;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
   color: var(--text);
   display: -webkit-box;
   -webkit-line-clamp: 2;

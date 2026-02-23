@@ -11,7 +11,7 @@ export default function Header({ query, onQuery }: HeaderProps) {
         <header className="site-header">
             <div className="site-header-inner">
                 <a href="/" className="site-logo">
-                    The Feed <span>/ tech</span>
+                    <i><strong>~Bb</strong></i>
                 </a>
                 <nav className="nav-tabs">
                     <a href="/" className={`nav-tab${pathname === '/' ? ' active' : ''}`}>Elite 15</a>

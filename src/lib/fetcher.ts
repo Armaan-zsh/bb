@@ -61,14 +61,16 @@ async function fetchFeed(source: Source): Promise<number> {
     let xml: string;
     try {
         xml = await fetchFeedXml(source.url);
-    } catch {
+    } catch (err: any) {
+        console.error(`\n   [X] Fetch failed: ${source.name} (${source.url}) - ${err.message}`);
         return 0;
     }
 
     let feed;
     try {
         feed = await parser.parseString(xml);
-    } catch {
+    } catch (err: any) {
+        console.error(`\n   [X] Parse failed: ${source.name} (${source.url}) - ${err.message}`);
         return 0;
     }
 

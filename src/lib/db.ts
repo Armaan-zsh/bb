@@ -7,25 +7,25 @@ const DB_PATH = path.join(process.cwd(), 'data', 'feeds.db');
 let _db: Database.Database | null = null;
 
 export function getDb(): Database.Database {
-    if (_db) return _db;
+  if (_db) return _db;
 
-    // Ensure data directory exists
-    const dir = path.dirname(DB_PATH);
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-    }
+  // Ensure data directory exists
+  const dir = path.dirname(DB_PATH);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
 
-    _db = new Database(DB_PATH);
-    _db.pragma('journal_mode = WAL');
-    _db.pragma('synchronous = NORMAL');
-    _db.pragma('foreign_keys = ON');
+  _db = new Database(DB_PATH);
+  _db.pragma('journal_mode = WAL');
+  _db.pragma('synchronous = NORMAL');
+  _db.pragma('foreign_keys = ON');
 
-    initSchema(_db);
-    return _db;
+  initSchema(_db);
+  return _db;
 }
 
 function initSchema(db: Database.Database) {
-    db.exec(`
+  db.exec(`
     CREATE TABLE IF NOT EXISTS sources (
       id          INTEGER PRIMARY KEY AUTOINCREMENT,
       name        TEXT NOT NULL,
@@ -76,48 +76,48 @@ function initSchema(db: Database.Database) {
 }
 
 export interface PostRow {
-    id: number;
-    source_id: number;
-    source_name: string;
-    source_category: string;
-    source_tier: number;
-    title: string;
-    url: string;
-    excerpt: string | null;
-    published_at: string | null;
-    fetched_at: string;
+  id: number;
+  source_id: number;
+  source_name: string;
+  source_category: string;
+  source_tier: number;
+  title: string;
+  url: string;
+  excerpt: string | null;
+  published_at: string | null;
+  fetched_at: string;
 }
 
 export interface SourceRow {
-    id: number;
-    name: string;
-    url: string;
-    category: string;
-    tier: number;
-    last_fetched: string | null;
-    post_count: number;
+  id: number;
+  name: string;
+  url: string;
+  category: string;
+  tier: number;
+  last_fetched: string | null;
+  post_count: number;
 }
 
 export interface GetPostsOptions {
-    page?: number;
-    limit?: number;
-    category?: string;
-    tier?: number;
-    q?: string;
-    sourceId?: number;
+  page?: number;
+  limit?: number;
+  category?: string;
+  tier?: number;
+  q?: string;
+  sourceId?: number;
 }
 
 export function getPosts(opts: GetPostsOptions = {}): { posts: PostRow[]; total: number } {
-    const db = getDb();
-    const { page = 1, limit = 24, category, tier, q, sourceId } = opts;
-    const offset = (page - 1) * limit;
+  const db = getDb();
+  const { page = 1, limit = 24, category, tier, q, sourceId } = opts;
+  const offset = (page - 1) * limit;
 
-    if (q && q.trim()) {
-        // FTS search path
-        const query = q.trim().replace(/['"*]/g, '') + '*';
-        const baseWhere = buildWhere({ category, tier, sourceId });
+  if (q && q.trim()) {
+    // FTS search path
+    const query = q.trim().replace(/['"*]/g, '') + '*';
+    const baseWhere = buildWhere({ category, tier, sourceId });
 
-        const posts = db.prepare(`
+    const posts = db.prepare(`
       SELECT p.*, s.name as source_name, s.category as source_category, s.tier as source_tier
       FROM posts_fts f
       JOIN posts p ON p.id = f.rowid
@@ -128,7 +128,7 @@ export function getPosts(opts: GetPostsOptions = {}): { posts: PostRow[]; total:
       LIMIT ? OFFSET ?
     `).all(...baseWhere.params, query, limit, offset) as PostRow[];
 
-        const { count } = db.prepare(`
+    const { count } = db.prepare(`
       SELECT COUNT(*) as count
       FROM posts_fts f
       JOIN posts p ON p.id = f.rowid
@@ -137,53 +137,76 @@ export function getPosts(opts: GetPostsOptions = {}): { posts: PostRow[]; total:
       AND posts_fts MATCH ?
     `).get(...baseWhere.params, query) as { count: number };
 
-        return { posts, total: count };
-    }
+    return { posts, total: count };
+  }
 
-    const where = buildWhere({ category, tier, sourceId });
-    const whereClause = where.sql ? 'WHERE ' + where.sql : '';
+  const where = buildWhere({ category, tier, sourceId });
+  const whereClause = where.sql ? 'WHERE ' + where.sql : '';
 
-    const posts = db.prepare(`
-    SELECT p.*, s.name as source_name, s.category as source_category, s.tier as source_tier
-    FROM posts p
-    JOIN sources s ON s.id = p.source_id
-    ${whereClause}
-    ORDER BY p.published_at DESC
-    LIMIT ? OFFSET ?
-  `).all(...where.params, limit, offset) as PostRow[];
+  // Use a CTE with ROW_NUMBER() to implement per-source diversity logic
+  // We only apply the per-source limit when we are in the "Elite 15" view (limit <= 24 and tier=1)
+  const isEliteView = (limit <= 24 && tier === 1 && !category && !q);
+  const sourceLimit = 2; // Max posts per source in elite view
 
-    const { count } = db.prepare(`
+  let querySql = `
+        SELECT p.*, s.name as source_name, s.category as source_category, s.tier as source_tier
+        FROM posts p
+        JOIN sources s ON s.id = p.source_id
+        ${whereClause}
+        ORDER BY p.published_at DESC
+        LIMIT ? OFFSET ?
+    `;
+
+  if (isEliteView) {
+    querySql = `
+            WITH RankedPosts AS (
+                SELECT p.*, s.name as source_name, s.category as source_category, s.tier as source_tier,
+                       ROW_NUMBER() OVER (PARTITION BY p.source_id ORDER BY p.published_at DESC) as rank
+                FROM posts p
+                JOIN sources s ON s.id = p.source_id
+                ${whereClause}
+            )
+            SELECT * FROM RankedPosts
+            WHERE rank <= ${sourceLimit}
+            ORDER BY published_at DESC
+            LIMIT ? OFFSET ?
+        `;
+  }
+
+  const posts = db.prepare(querySql).all(...where.params, limit, offset) as PostRow[];
+
+  const { count } = db.prepare(`
     SELECT COUNT(*) as count FROM posts p
     JOIN sources s ON s.id = p.source_id
     ${whereClause}
   `).get(...where.params) as { count: number };
 
-    return { posts, total: count };
+  return { posts, total: count };
 }
 
 function buildWhere(opts: { category?: string; tier?: number; sourceId?: number }) {
-    const conditions: string[] = [];
-    const params: (string | number)[] = [];
+  const conditions: string[] = [];
+  const params: (string | number)[] = [];
 
-    if (opts.category && opts.category !== 'all') {
-        conditions.push('s.category = ?');
-        params.push(opts.category);
-    }
-    if (opts.tier) {
-        conditions.push('s.tier <= ?');
-        params.push(opts.tier);
-    }
-    if (opts.sourceId) {
-        conditions.push('p.source_id = ?');
-        params.push(opts.sourceId);
-    }
+  if (opts.category && opts.category !== 'all') {
+    conditions.push('s.category = ?');
+    params.push(opts.category);
+  }
+  if (opts.tier) {
+    conditions.push('s.tier <= ?');
+    params.push(opts.tier);
+  }
+  if (opts.sourceId) {
+    conditions.push('p.source_id = ?');
+    params.push(opts.sourceId);
+  }
 
-    return { sql: conditions.join(' AND '), params };
+  return { sql: conditions.join(' AND '), params };
 }
 
 export function getSources(): SourceRow[] {
-    const db = getDb();
-    return db.prepare(`
+  const db = getDb();
+  return db.prepare(`
     SELECT s.*, COUNT(p.id) as post_count
     FROM sources s
     LEFT JOIN posts p ON p.source_id = s.id
@@ -194,14 +217,14 @@ export function getSources(): SourceRow[] {
 }
 
 export function getSource(id: number): SourceRow | undefined {
-    const db = getDb();
-    return db.prepare('SELECT * FROM sources WHERE id = ?').get(id) as SourceRow | undefined;
+  const db = getDb();
+  return db.prepare('SELECT * FROM sources WHERE id = ?').get(id) as SourceRow | undefined;
 }
 
 export function getTotalStats() {
-    const db = getDb();
-    const { postCount } = db.prepare('SELECT COUNT(*) as postCount FROM posts').get() as { postCount: number };
-    const { sourceCount } = db.prepare('SELECT COUNT(*) as sourceCount FROM sources WHERE active = 1').get() as { sourceCount: number };
-    const lastFetched = db.prepare('SELECT MAX(fetched_at) as t FROM posts').get() as { t: string | null };
-    return { postCount, sourceCount, lastFetched: lastFetched.t };
+  const db = getDb();
+  const { postCount } = db.prepare('SELECT COUNT(*) as postCount FROM posts').get() as { postCount: number };
+  const { sourceCount } = db.prepare('SELECT COUNT(*) as sourceCount FROM sources WHERE active = 1').get() as { sourceCount: number };
+  const lastFetched = db.prepare('SELECT MAX(fetched_at) as t FROM posts').get() as { t: string | null };
+  return { postCount, sourceCount, lastFetched: lastFetched.t };
 }

@@ -129,6 +129,14 @@ export const SOURCES: Source[] = [
   { name: "Bumble Tech", url: "https://medium.com/feed/bumble-tech", category: "engineering", tier: 3 },
 
   // ── INDIVIDUAL BLOGGERS ────────────────────────────────────
+  { name: "Simon Willison", url: "https://simonwillison.net/atom/entries/", category: "individual", tier: 1 },
+  { name: "Hillel Wayne", url: "https://www.hillelwayne.com/index.xml", category: "individual", tier: 1 },
+  { name: "Cory Doctorow", url: "https://pluralistic.net/feed/", category: "individual", tier: 1 },
+  { name: "Bert Hubert", url: "https://berthub.eu/articles/index.xml", category: "individual", tier: 1 },
+  { name: "Terence Eden", url: "https://shkspr.mobi/blog/feed/atom/", category: "individual", tier: 1 },
+  { name: "Ned Batchelder", url: "https://nedbatchelder.com/blog/rss.xml", category: "individual", tier: 1 },
+  { name: "Scripting News (Dave Winer)", url: "http://scripting.com/rss.xml", category: "individual", tier: 1 },
+  { name: "Robin Rendle", url: "https://robinrendle.com/feed.xml", category: "individual", tier: 1 },
   { name: "Dan Luu", url: "https://danluu.com/atom.xml", category: "individual", tier: 1 },
   { name: "Julia Evans", url: "https://jvns.ca/atom.xml", category: "individual", tier: 1 },
   { name: "Brendan Gregg", url: "http://www.brendangregg.com/blog/rss.xml", category: "individual", tier: 1 },

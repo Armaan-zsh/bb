@@ -85,7 +85,8 @@ a {
 
 .site-header {
   border-bottom: 1px solid var(--border);
-  padding: 16px 0;
+  padding: 8px 0;
+  /* Reduced from 16px */
   position: sticky;
   top: 0;
   background: rgba(10, 10, 12, 0.8);
@@ -97,25 +98,27 @@ a {
 .site-header-inner {
   display: flex;
   align-items: center;
-  gap: 32px;
-  height: 56px;
+  justify-content: space-between;
+  height: 40px;
+  /* Reduced from 56px */
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
 .site-logo {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: 18px;
   color: var(--text);
   white-space: nowrap;
-  flex-shrink: 0;
+  flex: 1;
+  /* Space taker */
+  text-decoration: none;
 }
 
-.site-logo span {
-  color: var(--text-muted);
-  font-weight: 400;
+.site-logo i strong {
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 /* ── NAV TABS ───────────────────────────────────────────── */
@@ -123,10 +126,10 @@ a {
 .nav-tabs {
   display: flex;
   align-items: center;
-  gap: 2px;
-  flex: 1;
-  overflow-x: auto;
-  scrollbar-width: none;
+  gap: 32px;
+  /* Premium spacing */
+  flex: 0;
+  /* Content only, centered */
 }
 
 .nav-tabs::-webkit-scrollbar {
@@ -154,7 +157,10 @@ a {
 /* ── SEARCH ─────────────────────────────────────────────── */
 
 .search-wrap {
-  flex-shrink: 0;
+  flex: 1;
+  /* Space taker */
+  display: flex;
+  justify-content: flex-end;
 }
 
 .search-input {

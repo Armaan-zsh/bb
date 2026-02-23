@@ -1,0 +1,153 @@
+import Parser from 'rss-parser';
+import { htmlToText } from 'html-to-text';
+import { getDb } from './db';
+import { SOURCES, Source } from './sources';
+
+const parser = new Parser({
+    customFields: {
+        item: [['content:encoded', 'contentEncoded'], ['description', 'description']],
+    },
+});
+
+function cleanExcerpt(raw: string | undefined): string {
+    if (!raw) return '';
+    const text = htmlToText(raw, {
+        wordwrap: false,
+        selectors: [
+            { selector: 'a', options: { ignoreHref: true } },
+            { selector: 'img', format: 'skip' },
+            { selector: 'figure', format: 'skip' },
+        ],
+    });
+    const trimmed = text.replace(/\s+/g, ' ').trim();
+    if (trimmed.length <= 280) return trimmed;
+    const cut = trimmed.substring(0, 280);
+    return cut.substring(0, cut.lastIndexOf(' ')) + '…';
+}
+
+function ensureSource(name: string, url: string, category: string, tier: number): number {
+    const db = getDb();
+    const existing = db.prepare('SELECT id FROM sources WHERE url = ?').get(url) as { id: number } | undefined;
+    if (existing) return existing.id;
+
+    const result = db.prepare(
+        'INSERT INTO sources (name, url, category, tier) VALUES (?, ?, ?, ?)'
+    ).run(name, url, category, tier);
+    return result.lastInsertRowid as number;
+}
+
+async function fetchFeedXml(url: string): Promise<string> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    try {
+        const res = await fetch(url, {
+            signal: controller.signal,
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (compatible; TheFeed/1.0)',
+                'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
+            },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.text();
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+async function fetchFeed(source: Source): Promise<number> {
+    const db = getDb();
+    const sourceId = ensureSource(source.name, source.url, source.category, source.tier);
+
+    let xml: string;
+    try {
+        xml = await fetchFeedXml(source.url);
+    } catch {
+        return 0;
+    }
+
+    let feed;
+    try {
+        feed = await parser.parseString(xml);
+    } catch {
+        return 0;
+    }
+
+    const insertPost = db.prepare(`
+    INSERT OR IGNORE INTO posts (source_id, title, url, excerpt, published_at)
+    VALUES (?, ?, ?, ?, ?)
+  `);
+
+    let inserted = 0;
+    for (const item of feed.items ?? []) {
+        if (!item.title || !item.link) continue;
+
+        const rawContent = (item as Record<string, string>).contentEncoded || item.content || item.description || item.summary || '';
+        const excerpt = cleanExcerpt(rawContent);
+        const pubDate = item.pubDate || item.isoDate || null;
+
+        const result = insertPost.run(
+            sourceId,
+            item.title.trim(),
+            item.link.trim(),
+            excerpt || null,
+            pubDate
+        );
+        if (result.changes > 0) inserted++;
+    }
+
+    if (inserted > 0) {
+        db.prepare('UPDATE sources SET last_fetched = datetime("now"), post_count = post_count + ? WHERE id = ?')
+            .run(inserted, sourceId);
+    }
+
+    return inserted;
+}
+
+export async function fetchAllFeeds(options: {
+    concurrency?: number;
+    onProgress?: (done: number, total: number, name: string) => void;
+    tierLimit?: number;
+} = {}): Promise<{ total: number; errors: number }> {
+    const { concurrency = 10, onProgress, tierLimit } = options;
+
+    const sources = tierLimit
+        ? SOURCES.filter(s => s.tier <= tierLimit)
+        : SOURCES;
+
+    // Remove duplicates by URL
+    const seen = new Set<string>();
+    const unique = sources.filter(s => {
+        if (seen.has(s.url)) return false;
+        seen.add(s.url);
+        return true;
+    });
+
+    let done = 0;
+    let totalInserted = 0;
+    let errors = 0;
+
+    for (let i = 0; i < unique.length; i += concurrency) {
+        const batch = unique.slice(i, i + concurrency);
+        const results = await Promise.allSettled(batch.map(s => fetchFeed(s)));
+
+        for (let j = 0; j < results.length; j++) {
+            done++;
+            const r = results[j];
+            if (r.status === 'fulfilled') {
+                totalInserted += r.value;
+            } else {
+                errors++;
+            }
+            onProgress?.(done, unique.length, batch[j].name);
+        }
+    }
+
+    return { total: totalInserted, errors };
+}
+
+export async function fetchIncrementalFeeds(options: {
+    concurrency?: number;
+    tierLimit?: number;
+} = {}): Promise<{ total: number; errors: number }> {
+    return fetchAllFeeds(options);
+}

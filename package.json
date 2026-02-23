@@ -1,24 +1,34 @@
 {
-  "name": "site",
+  "name": "the-feed",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "tsx scripts/seed.ts",
+    "seed:t1": "tsx scripts/seed.ts --tier=1",
+    "seed:t2": "tsx scripts/seed.ts --tier=2"
   },
   "dependencies": {
-    "next": "16.1.6",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "better-sqlite3": "^11.10.0",
+    "date-fns": "^4.1.0",
+    "html-to-text": "^9.0.5",
+    "next": "^14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rss-parser": "^3.13.0"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/html-to-text": "^9.0.4",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.3.7",
     "eslint": "^9",
-    "eslint-config-next": "16.1.6",
+    "eslint-config-next": "^14.2.35",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

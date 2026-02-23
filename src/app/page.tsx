@@ -31,6 +31,7 @@ const CATEGORIES = [
   { key: 'security', label: 'Security' },
   { key: 'individual', label: 'Individual' },
   { key: 'language', label: 'Languages' },
+  { key: 'misc', label: 'Research' },
 ];
 
 export default function HomePage() {
@@ -45,6 +46,7 @@ export default function HomePage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [readingPost, setReadingPost] = useState<Post | null>(null);
+  const [trending, setTrending] = useState<string[]>([]);
   const [empty, setEmpty] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -62,7 +64,10 @@ export default function HomePage() {
   useEffect(() => {
     fetch('/api/sources')
       .then(r => r.json())
-      .then(d => setStats(d.stats))
+      .then(d => {
+        setStats(d.stats);
+        setTrending(d.trending ?? []);
+      })
       .catch(() => { });
   }, []);
 
@@ -93,9 +98,32 @@ export default function HomePage() {
 
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
-  function handleCategory(cat: string) {
-    setCategory(cat);
-    setPage(1);
+  function groupPosts(posts: Post[]) {
+    const today: Post[] = [];
+    const yesterday: Post[] = [];
+    const thisWeek: Post[] = [];
+    const older: Post[] = [];
+
+    const now = new Date();
+    const todayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const yesterdayDate = todayDate - 86400000;
+    const weekDate = todayDate - 86400000 * 7;
+
+    posts.forEach(p => {
+      if (!p.published_at) { older.push(p); return; }
+      const d = new Date(p.published_at).getTime();
+      if (d >= todayDate) today.push(p);
+      else if (d >= yesterdayDate) yesterday.push(p);
+      else if (d >= weekDate) thisWeek.push(p);
+      else older.push(p);
+    });
+
+    return [
+      { label: 'Today', posts: today },
+      { label: 'Yesterday', posts: yesterday },
+      { label: 'Past 7 Days', posts: thisWeek },
+      { label: 'Deep Signal', posts: older }
+    ].filter(g => g.posts.length > 0);
   }
 
   return (
@@ -104,14 +132,34 @@ export default function HomePage() {
       <main>
         <div className="site-wrapper">
 
+          {/* Pulse Bar */}
+          {trending.length > 0 && !debouncedQuery && (
+            <div className="pulse-bar">
+              <span className="pulse-label">TRENDING PULSE:</span>
+              <div className="pulse-tags">
+                {trending.map(tag => (
+                  <button key={tag} className="pulse-tag" onClick={() => setQuery(tag)}>
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Controls */}
           <div className="controls-row">
             <div className="controls-tabs">
-              {CATEGORIES.map(c => (
+              <button
+                className={`ctrl-tab${category === 'all' ? ' active' : ''}`}
+                onClick={() => { setCategory('all'); setPage(1); }}
+              >
+                Signal
+              </button>
+              {CATEGORIES.filter(c => c.key !== 'all').map(c => (
                 <button
                   key={c.key}
                   className={`ctrl-tab${category === c.key ? ' active' : ''}`}
-                  onClick={() => handleCategory(c.key)}
+                  onClick={() => { setCategory(c.key); setPage(1); }}
                 >
                   {c.label}
                 </button>
@@ -130,9 +178,6 @@ export default function HomePage() {
                 All Signal
               </button>
             </div>
-            <span className="result-count">
-              {loading ? '…' : `${total.toLocaleString()} posts`}
-            </span>
           </div>
 
           {/* Posts */}
@@ -142,13 +187,20 @@ export default function HomePage() {
               <p>Run <code>npx tsx scripts/seed.ts</code> to populate the database.</p>
             </div>
           ) : (
-            <div className="posts-grid">
-              {posts.map(post => (
-                <PostCard
-                  key={post.id}
-                  post={post}
-                  onRead={(p) => setReadingPost(p)}
-                />
+            <div className="feed-container">
+              {groupPosts(posts).map(group => (
+                <section key={group.label} className="time-group">
+                  <h3 className="group-label">{group.label}</h3>
+                  <div className="posts-grid">
+                    {group.posts.map(post => (
+                      <PostCard
+                        key={post.id}
+                        post={post}
+                        onRead={(p) => setReadingPost(p)}
+                      />
+                    ))}
+                  </div>
+                </section>
               ))}
               {loading && !posts.length && Array.from({ length: 12 }).map((_, i) => (
                 <div key={i} className="post-card" style={{ opacity: 0.3, minHeight: 160 }} />
@@ -169,7 +221,7 @@ export default function HomePage() {
             </div>
           )}
         </div>
-      </main>
+      </main >
 
       {readingPost && (
         <ReaderModal
@@ -177,7 +229,8 @@ export default function HomePage() {
           sourceName={readingPost.source_name}
           onClose={() => setReadingPost(null)}
         />
-      )}
+      )
+      }
     </>
   );
 }

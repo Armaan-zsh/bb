@@ -223,8 +223,26 @@ export function getSource(id: number): SourceRow | undefined {
 
 export function getTotalStats() {
   const db = getDb();
-  const { postCount } = db.prepare('SELECT COUNT(*) as postCount FROM posts').get() as { postCount: number };
-  const { sourceCount } = db.prepare('SELECT COUNT(*) as sourceCount FROM sources WHERE active = 1').get() as { sourceCount: number };
+  const { count: postCount } = db.prepare('SELECT COUNT(*) as count FROM posts').get() as { count: number };
+  const { count: sourceCount } = db.prepare('SELECT COUNT(*) as count FROM sources WHERE active = 1').get() as { count: number };
   const lastFetched = db.prepare('SELECT MAX(fetched_at) as t FROM posts').get() as { t: string | null };
   return { postCount, sourceCount, lastFetched: lastFetched.t };
+}
+
+export function purgePosts(days: number = 30) {
+  const db = getDb();
+  const result = db.prepare("DELETE FROM posts WHERE published_at < datetime('now', '-' || ? || ' days')").run(days);
+  db.prepare("INSERT INTO posts_fts(posts_fts) VALUES('optimize')").run();
+  return result.changes;
+}
+
+export function getTrendingKeywords(limit: number = 8) {
+  const db = getDb();
+  const rows = db.prepare(`
+        SELECT title FROM posts 
+        WHERE published_at > datetime('now', '-2 days')
+    `).all() as { title: string }[];
+
+  const { rankKeywords } = require('./pulse');
+  return rankKeywords(rows.map(r => r.title)).slice(0, limit);
 }

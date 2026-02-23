@@ -129,8 +129,15 @@ export async function fetchAllFeeds(options: {
     concurrency?: number;
     onProgress?: (done: number, total: number, name: string) => void;
     tierLimit?: number;
+    purge?: boolean;
 } = {}): Promise<{ total: number; errors: number }> {
-    const { concurrency = 10, onProgress, tierLimit } = options;
+    const { concurrency = 10, onProgress, tierLimit, purge = true } = options;
+
+    if (purge) {
+        const { purgePosts } = require('./db');
+        const purged = purgePosts(30);
+        if (purged > 0) console.log(`\n🧹 Auto-purged ${purged} stale posts (>30 days).`);
+    }
 
     const sources = tierLimit
         ? SOURCES.filter(s => s.tier <= tierLimit)

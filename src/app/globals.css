@@ -118,7 +118,81 @@ a {
 .site-logo i strong {
   font-style: italic;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.05em;
+}
+
+/* ── SIGNAL PULSE ────────────────────────────────────────── */
+
+.pulse-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pulse-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.pulse-tags {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pulse-tags::-webkit-scrollbar {
+  display: none;
+}
+
+.pulse-tag {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.pulse-tag:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: var(--surface);
+}
+
+/* ── TIME GROUPS ────────────────────────────────────────── */
+
+.time-group {
+  margin-bottom: 48px;
+}
+
+.group-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.group-label::after {
+  content: "";
+  height: 1px;
+  background: var(--border);
+  flex: 1;
 }
 
 /* ── NAV TABS ───────────────────────────────────────────── */
@@ -170,9 +244,15 @@ a {
   color: var(--text);
   font-family: var(--font-sans);
   font-size: 13px;
-  padding: 5px 12px;
-  width: 200px;
+  padding: 6px 14px;
+  width: 240px;
   outline: none;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
 }
 
 .search-input::placeholder {

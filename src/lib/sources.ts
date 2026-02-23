@@ -216,4 +216,8 @@ export const SOURCES: Source[] = [
   { name: "RocksDB", url: "http://rocksdb.org/feed.xml", category: "language", tier: 2 },
   { name: "Swift Blog (Apple)", url: "https://developer.apple.com/swift/blog/news.rss", category: "language", tier: 2 },
   { name: "Nvidia Developer Blog", url: "https://developer.nvidia.com/blog/feed", category: "language", tier: 2 },
+
+  // ── RESEARCH (ARXIV) ──────────────────────────────────────
+  { name: "Arxiv: AI + ML", url: "https://rss.arxiv.org/rss/cs.AI+cs.LG", category: "misc", tier: 1 },
+  { name: "Arxiv: Security", url: "https://rss.arxiv.org/rss/cs.CR", category: "security", tier: 1 },
 ];

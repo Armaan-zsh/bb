@@ -30,7 +30,12 @@ export async function GET(req: NextRequest) {
 
         const html = await res.text();
         const dom = new JSDOM(html, { url });
-        const reader = new Readability(dom.window.document);
+
+        // Readability usually strips iframes and videos. 
+        // We want to keep them for YouTube/Media embeds.
+        const reader = new Readability(dom.window.document, {
+            keepClasses: true,
+        });
         const article = reader.parse();
 
         if (!article) {

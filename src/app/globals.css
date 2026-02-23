@@ -987,6 +987,16 @@ a {
   text-underline-offset: 4px;
 }
 
+.reader-body iframe,
+.reader-body video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin: 32px 0;
+  background: #000;
+}
+
 .reader-loading {
   display: flex;
   flex-direction: column;

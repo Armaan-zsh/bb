@@ -38,6 +38,7 @@ export default function HomePage() {
   const [pages, setPages] = useState(1);
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState('all');
+  const [tier, setTier] = useState<number | 'all'>(1);
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [stats, setStats] = useState<Stats | null>(null);
@@ -68,8 +69,9 @@ export default function HomePage() {
     setLoading(true);
     const params = new URLSearchParams({
       page: String(page),
-      limit: '24',
+      limit: tier === 1 ? '15' : '24',
       ...(category !== 'all' && { category }),
+      ...(tier !== 'all' && { tier: String(tier) }),
       ...(debouncedQuery && { q: debouncedQuery }),
     });
 
@@ -85,7 +87,7 @@ export default function HomePage() {
     } finally {
       setLoading(false);
     }
-  }, [page, category, debouncedQuery]);
+  }, [page, category, tier, debouncedQuery]);
 
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
@@ -101,10 +103,10 @@ export default function HomePage() {
         <div className="site-wrapper">
           {/* Hero */}
           <div className="hero">
-            <p className="hero-eyebrow">The Feed</p>
+            <p className="hero-eyebrow">Elite Curated Feed</p>
             <h1 className="hero-title">
-              Engineering &amp; Security blogs.<br />
-              <em>No AI slop.</em>
+              The 15 Best Tech Posts.<br />
+              <em>Pure signal.</em>
             </h1>
             <p className="hero-subtitle">
               Curated from the best minds in the industry — updated constantly, no noise.
@@ -143,6 +145,19 @@ export default function HomePage() {
                   {c.label}
                 </button>
               ))}
+              <div style={{ width: 1, height: 20, background: 'var(--border)', margin: '0 8px' }} />
+              <button
+                className={`ctrl-tab${tier === 1 ? ' active' : ''}`}
+                onClick={() => { setTier(1); setPage(1); }}
+              >
+                Elite Only
+              </button>
+              <button
+                className={`ctrl-tab${tier === 'all' ? ' active' : ''}`}
+                onClick={() => { setTier('all'); setPage(1); }}
+              >
+                All Signal
+              </button>
             </div>
             <span className="result-count">
               {loading ? '…' : `${total.toLocaleString()} posts`}
@@ -167,7 +182,7 @@ export default function HomePage() {
           )}
 
           {/* Pagination */}
-          {pages > 1 && (
+          {pages > 1 && tier !== 1 && (
             <div className="pagination">
               <button className="page-btn" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
                 ← Prev

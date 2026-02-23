@@ -1,4 +1,4 @@
-'use client';
+import { usePathname } from 'next/navigation';
 
 interface HeaderProps {
     query: string;
@@ -6,6 +6,7 @@ interface HeaderProps {
 }
 
 export default function Header({ query, onQuery }: HeaderProps) {
+    const pathname = usePathname();
     return (
         <header className="site-header">
             <div className="site-header-inner">
@@ -13,8 +14,9 @@ export default function Header({ query, onQuery }: HeaderProps) {
                     The Feed <span>/ tech</span>
                 </a>
                 <nav className="nav-tabs">
-                    <a href="/" className="nav-tab active">Home</a>
-                    <a href="/sources" className="nav-tab">Sources</a>
+                    <a href="/" className={`nav-tab${pathname === '/' ? ' active' : ''}`}>Elite 15</a>
+                    <a href="/feed" className={`nav-tab${pathname === '/feed' ? ' active' : ''}`}>Wide Feed</a>
+                    <a href="/sources" className={`nav-tab${pathname === '/sources' ? ' active' : ''}`}>Sources</a>
                 </nav>
                 <div className="search-wrap">
                     <input

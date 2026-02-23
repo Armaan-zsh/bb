@@ -3,10 +3,22 @@
 // Seeds the DB with all feeds. Use --tier=1 to only fetch Tier 1 sources.
 
 import { fetchAllFeeds } from '../src/lib/fetcher';
+import { getDb } from '../src/lib/db';
 
 const args = process.argv.slice(2);
 const tierArg = args.find(a => a.startsWith('--tier='));
-const tierLimit = tierArg ? parseInt(tierArg.split('=')[1]) : undefined;
+const tier = tierArg?.split('=')[1];
+const tierLimit = tier ? parseInt(tier) : undefined;
+const wipe = args.includes('--wipe');
+
+if (wipe) {
+    console.log('🧹 Wiping existing posts and resetting source counts...');
+    const db = getDb();
+    db.prepare('DELETE FROM posts').run();
+    db.prepare('DELETE FROM posts_fts').run();
+    db.prepare('UPDATE sources SET post_count = 0, last_fetched = NULL').run();
+    console.log('✨ Database cleaned.');
+}
 
 console.log('🔄 Starting feed fetch...');
 if (tierLimit) console.log(`   Tier limit: ${tierLimit}`);

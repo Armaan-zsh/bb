@@ -77,18 +77,38 @@ async function fetchFeed(source: Source): Promise<number> {
     VALUES (?, ?, ?, ?, ?)
   `);
 
-    let inserted = 0;
-    for (const item of feed.items ?? []) {
-        if (!item.title || !item.link) continue;
+    // SORT BY DATE (descending) and LIMIT to 15
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
-        const rawContent = (item as Record<string, string>).contentEncoded || item.content || item.description || item.summary || '';
+    const items = (feed.items ?? [])
+        .filter(item => {
+            if (!item.title || !item.link) return false;
+            const pubDate = item.isoDate || item.pubDate;
+            if (pubDate) {
+                const d = new Date(pubDate);
+                if (d < sixMonthsAgo) return false; // Too old
+            }
+            return true;
+        })
+        .sort((a, b) => {
+            const dateA = new Date(a.isoDate || a.pubDate || 0).getTime();
+            const dateB = new Date(b.isoDate || b.pubDate || 0).getTime();
+            return dateB - dateA;
+        })
+        .slice(0, 15);
+
+    let inserted = 0;
+    for (const item of items) {
+        const rawItem = item as any;
+        const rawContent = rawItem.contentEncoded || rawItem.content || rawItem.description || rawItem.summary || '';
         const excerpt = cleanExcerpt(rawContent);
-        const pubDate = item.pubDate || item.isoDate || null;
+        const pubDate = item.isoDate || item.pubDate || null;
 
         const result = insertPost.run(
             sourceId,
-            item.title.trim(),
-            item.link.trim(),
+            item.title!.trim(),
+            item.link!.trim(),
             excerpt || null,
             pubDate
         );

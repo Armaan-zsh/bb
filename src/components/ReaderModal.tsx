@@ -61,42 +61,44 @@ export default function ReaderModal({ url, sourceName, onClose }: ReaderModalPro
             >
                 <button className="reader-close" onClick={onClose}>Close (Esc)</button>
 
-                {loading ? (
-                    <div className="reader-loading">
-                        <div className="spinner"></div>
-                        <span>Fetching full article signal...</span>
-                    </div>
-                ) : error ? (
-                    <div className="reader-loading">
-                        <span>{error}</span>
-                        <a href={url} target="_blank" rel="noopener noreferrer" className="nav-tab">
-                            View Original Source
-                        </a>
-                    </div>
-                ) : (
-                    <article>
-                        <div className="reader-meta">
-                            <div className="reader-source">{sourceName}</div>
-                            <h1 className="reader-title">{article?.title}</h1>
-                            {article?.byline && (
-                                <div style={{ marginTop: 8, fontSize: 13, color: 'var(--text-faint)' }}>
-                                    By {article.byline}
-                                </div>
-                            )}
+                <div className="reader-scroll-area">
+                    {loading ? (
+                        <div className="reader-loading">
+                            <div className="spinner"></div>
+                            <span>Fetching full article signal...</span>
                         </div>
-
-                        <div
-                            className="reader-body"
-                            dangerouslySetInnerHTML={{ __html: article?.content || '' }}
-                        />
-
-                        <div style={{ marginTop: 64, borderTop: '1px solid var(--border)', paddingTop: 32 }}>
+                    ) : error ? (
+                        <div className="reader-loading">
+                            <span>{error}</span>
                             <a href={url} target="_blank" rel="noopener noreferrer" className="nav-tab">
-                                Read original on {article?.siteName || sourceName} →
+                                View Original Source
                             </a>
                         </div>
-                    </article>
-                )}
+                    ) : (
+                        <article>
+                            <div className="reader-meta">
+                                <div className="reader-source">{sourceName}</div>
+                                <h1 className="reader-title">{article?.title}</h1>
+                                {article?.byline && (
+                                    <div style={{ marginTop: 8, fontSize: 13, color: 'var(--text-faint)' }}>
+                                        By {article.byline}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div
+                                className="reader-body"
+                                dangerouslySetInnerHTML={{ __html: article?.content || '' }}
+                            />
+
+                            <div style={{ marginTop: 64, borderTop: '1px solid var(--border)', paddingTop: 32 }}>
+                                <a href={url} target="_blank" rel="noopener noreferrer" className="nav-tab">
+                                    Read original on {article?.siteName || sourceName} →
+                                </a>
+                            </div>
+                        </article>
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -132,21 +132,6 @@ export default function HomePage() {
       <main>
         <div className="site-wrapper">
 
-          {/* Pulse Bar */}
-          {trending.length > 0 && !debouncedQuery && (
-            <div className="pulse-bar-wrapper">
-              <div className="pulse-bar">
-                <span className="pulse-label">SIGNAL TRENDS</span>
-                <div className="pulse-tags">
-                  {trending.map(tag => (
-                    <button key={tag} className="pulse-tag" onClick={() => setQuery(tag)}>
-                      #{tag}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Controls */}
           <div className="controls-row">

@@ -29,16 +29,32 @@ export default function PostCard({ post, onRead }: { post: Post; onRead: (post: 
 
     return (
         <article className="post-card">
-            <div className="post-card-meta">
+            <div className="post-card-header">
                 <a href={`/source/${post.source_id}`} className="post-source">
                     {post.source_name}
                 </a>
-                {date && <span className="post-date">{date}</span>}
+                <div className="post-card-badges">
+                    {post.source_tier === 1 && <span className="badge-elite">Elite Signal</span>}
+                </div>
             </div>
 
-            <a href={post.url} onClick={(e) => { e.preventDefault(); onRead(post); }}>
+            <a href={post.url} className="post-card-content" onClick={(e) => { e.preventDefault(); onRead(post); }}>
                 <h2 className="post-title">{post.title}</h2>
+                {post.excerpt && (
+                    <p className="post-excerpt">
+                        {post.excerpt.length > 180 ? post.excerpt.substring(0, 180) + '...' : post.excerpt}
+                    </p>
+                )}
             </a>
+
+            <div className="post-card-footer">
+                {date && <span className="post-date">{date}</span>}
+                <div className="post-card-actions">
+                    <button className="read-btn" onClick={() => onRead(post)}>
+                        Open Reader ↗
+                    </button>
+                </div>
+            </div>
         </article>
     );
 }

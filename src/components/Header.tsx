@@ -8,12 +8,22 @@ interface HeaderProps {
 
 type Theme = 'dark' | 'latte' | 'ember' | 'nordic';
 
+interface PulseData {
+    stats: {
+        postCount: number;
+        sourceCount: number;
+        lastFetched: string | null;
+    };
+    keywords: string[];
+}
+
 export default function Header({ query, onQuery }: HeaderProps) {
     const pathname = usePathname();
     const [theme, setTheme] = useState<Theme>('dark');
     const [isShrunk, setIsShrunk] = useState(false);
+    const [pulse, setPulse] = useState<PulseData | null>(null);
 
-    // Initialize theme and scroll listener
+    // Initialize theme, scroll listener, and fetch pulse
     useEffect(() => {
         const savedTheme = localStorage.getItem('site-theme') as Theme;
         if (savedTheme) {
@@ -27,7 +37,20 @@ export default function Header({ query, onQuery }: HeaderProps) {
             setIsShrunk(window.scrollY > 20);
         };
 
+        async function fetchPulse() {
+            try {
+                const res = await fetch('/api/pulse');
+                if (res.ok) {
+                    const data = await res.json();
+                    setPulse(data);
+                }
+            } catch (err) {
+                console.error('Pulse fetch failed');
+            }
+        }
+
         window.addEventListener('scroll', handleScroll);
+        fetchPulse();
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -43,6 +66,31 @@ export default function Header({ query, onQuery }: HeaderProps) {
                 <a href="/" className="site-logo">
                     <i><strong>~Bb</strong></i>
                 </a>
+
+                {!isShrunk && pulse && (
+                    <div className="pulse-stats">
+                        <div className="pulse-item">
+                            <span className="pulse-label">Signals</span>
+                            <span className="pulse-value">{pulse.stats.postCount}</span>
+                        </div>
+                        <div className="pulse-divider"></div>
+                        <div className="pulse-item">
+                            <span className="pulse-label">Sources</span>
+                            <span className="pulse-value">{pulse.stats.sourceCount}</span>
+                        </div>
+                        {pulse.keywords.length > 0 && (
+                            <>
+                                <div className="pulse-divider"></div>
+                                <div className="pulse-keywords">
+                                    {pulse.keywords.slice(0, 3).map(kw => (
+                                        <span key={kw} className="pulse-keyword">#{kw}</span>
+                                    ))}
+                                </div>
+                            </>
+                        )}
+                    </div>
+                )}
+
                 <nav className="nav-tabs">
                     <a href="/" className={`nav-tab${pathname === '/' ? ' active' : ''}`}>Elite 15</a>
                     <a href="/feed" className={`nav-tab${pathname === '/feed' ? ' active' : ''}`}>Wide Feed</a>

@@ -248,58 +248,79 @@ a {
 }
 
 .site-logo i strong {
+  font-style: normal;
+}
+
+/* ── PULSE STATS ────────────────────────────────────────── */
+
+.pulse-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(var(--accent-rgb), 0.03);
+  padding: 4px 20px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  margin: 0 20px;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.pulse-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pulse-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  font-weight: 600;
+}
+
+.pulse-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  font-family: var(--font-mono);
+}
+
+.pulse-divider {
+  width: 1px;
+  height: 12px;
+  background: var(--border);
+}
+
+.pulse-keywords {
+  display: flex;
+  gap: 12px;
+}
+
+.pulse-keyword {
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 500;
+  opacity: 0.8;
+  cursor: default;
+}
+
+.pulse-keyword:hover {
+  opacity: 1;
+}
+
+.site-logo i strong {
   font-style: italic;
   font-weight: 800;
   letter-spacing: -0.05em;
 }
 
-/* ── SIGNAL PULSE ────────────────────────────────────────── */
-
-.pulse-bar {
+/* ── NAV TABS ───────────────────────────────────────────── */
+.nav-tabs {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 12px 0;
-  margin-bottom: 24px;
-  border-bottom: 1px solid var(--border);
-}
-
-.pulse-label {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-  white-space: nowrap;
-}
-
-.pulse-tags {
-  display: flex;
   gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.pulse-tags::-webkit-scrollbar {
-  display: none;
-}
-
-.pulse-tag {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  padding: 4px 12px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-
-.pulse-tag:hover {
-  border-color: var(--accent);
-  color: var(--text);
-  background: var(--surface);
 }
 
 /* ── TIME GROUPS ────────────────────────────────────────── */
@@ -325,20 +346,6 @@ a {
   color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-}
-
-.pulse-bar-wrapper {
-  margin-top: 24px;
-}
-
-.pulse-bar {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  padding: 10px 16px;
-  border-radius: 100px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
 }
 
 /* ── NAV TABS ───────────────────────────────────────────── */

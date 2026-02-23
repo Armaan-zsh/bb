@@ -25,17 +25,12 @@ function relativeDate(dateStr: string | null): string {
 }
 
 export default function PostCard({ post }: { post: Post }) {
-    const isElite = post.source_tier === 1;
     const date = relativeDate(post.published_at);
 
     return (
-        <article className={`post-card${isElite ? ' tier-1' : ''}`}>
+        <article className="post-card">
             <div className="post-card-meta">
-                <a
-                    href={`/source/${post.source_id}`}
-                    className="post-source"
-                    title={post.source_name}
-                >
+                <a href={`/source/${post.source_id}`} className="post-source">
                     {post.source_name}
                 </a>
                 {date && <span className="post-date">{date}</span>}
@@ -44,22 +39,6 @@ export default function PostCard({ post }: { post: Post }) {
             <a href={post.url} target="_blank" rel="noopener noreferrer">
                 <h2 className="post-title">{post.title}</h2>
             </a>
-
-            {post.excerpt && (
-                <p className="post-excerpt">{post.excerpt}</p>
-            )}
-
-            <div className="post-footer">
-                <span className="post-category">{post.source_category}</span>
-                <a
-                    href={post.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="post-read-link"
-                >
-                    Read →
-                </a>
-            </div>
         </article>
     );
 }

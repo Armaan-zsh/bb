@@ -101,37 +101,6 @@ export default function HomePage() {
       <Header query={query} onQuery={setQuery} />
       <main>
         <div className="site-wrapper">
-          {/* Hero */}
-          <div className="hero">
-            <p className="hero-eyebrow">Elite Curated Feed</p>
-            <h1 className="hero-title">
-              The 15 Best Tech Posts.<br />
-              <em>Pure signal.</em>
-            </h1>
-            <p className="hero-subtitle">
-              Curated from the best minds in the industry — updated constantly, no noise.
-            </p>
-            {stats && (
-              <div className="hero-stats">
-                <div className="stat-item">
-                  <span className="stat-value">{(stats.postCount || 0).toLocaleString()}</span>
-                  <span className="stat-label">Posts</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-value">{stats.sourceCount || 0}</span>
-                  <span className="stat-label">Sources</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-value">
-                    {stats.lastFetched
-                      ? new Date(stats.lastFetched).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                      : '—'}
-                  </span>
-                  <span className="stat-label">Last Updated</span>
-                </div>
-              </div>
-            )}
-          </div>
 
           {/* Controls */}
           <div className="controls-row">

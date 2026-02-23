@@ -32,37 +32,40 @@ export async function GET(req: NextRequest) {
         const dom = new JSDOM(html, { url });
         const doc = dom.window.document;
 
-        // 🛡️ MEDIA SHIELD PRE-PROCESSING
-        const markers: string[] = [];
+        // 🛡️ MEDIA SHIELD 2.0: EXTRACTION & PLACEHOLDER
+        const mediaMetadata: { type: string, src: string, label: string }[] = [];
         const mediaSelectors = 'iframe, video, audio, embed, object';
 
         doc.querySelectorAll(mediaSelectors).forEach((el, i) => {
-            const placeholder = doc.createElement('div');
-            placeholder.className = 'readability-media-placeholder';
-            placeholder.textContent = `[[MEDIA_SHIELD_${i}]]`;
+            // 1. Determine Type & Label
+            let type = el.tagName.toLowerCase();
+            let label = 'Media Content';
 
-            // Resolve URLs & Resolve Lazy Loading
-            ['src', 'data-src', 'data-original-src', 'href'].forEach(attr => {
-                const val = el.getAttribute(attr);
-                if (val) {
-                    try {
-                        const absolute = new URL(val, url).toString();
-                        el.setAttribute(attr, absolute);
-                        // Force src if it's a lazy attribute
-                        if (attr !== 'src' && attr !== 'href') {
-                            el.setAttribute('src', absolute);
-                        }
-                    } catch { }
-                }
-            });
-
-            // Ensure iframes have basic styling/loading
-            if (el.tagName === 'IFRAME') {
-                el.setAttribute('loading', 'eager');
+            // Try to find a better label (e.g. YouTube)
+            const src = el.getAttribute('src') || el.getAttribute('data-src') || '';
+            if (src.includes('youtube.com') || src.includes('youtu.be')) {
+                type = 'youtube';
+                label = 'YouTube Video';
+            } else if (src.includes('vimeo.com')) {
+                type = 'vimeo';
+                label = 'Vimeo Video';
             }
 
-            markers[i] = el.outerHTML;
-            el.parentNode?.replaceChild(placeholder, el);
+            // 2. Resolve URL
+            let resolvedSrc = src;
+            if (src && !src.startsWith('http')) {
+                try {
+                    resolvedSrc = new URL(src, url).toString();
+                } catch { }
+            }
+
+            if (resolvedSrc) {
+                mediaMetadata[i] = { type, src: resolvedSrc, label };
+                const placeholder = doc.createElement('div');
+                placeholder.className = 'readability-media-placeholder';
+                placeholder.textContent = `[[MEDIA_SHIELD_2_0_${i}]]`;
+                el.parentNode?.replaceChild(placeholder, el);
+            }
         });
 
         // Also fix regular images for relative URLs and lazy loading
@@ -86,10 +89,41 @@ export async function GET(req: NextRequest) {
             throw new Error('Could not parse article content');
         }
 
-        // 🛡️ MEDIA SHIELD RESTORATION
+        // 🛡️ MEDIA SHIELD 2.0: RECONSTRUCTION
         let finalContent = article.content || '';
-        markers.forEach((mediaHtml, i) => {
-            finalContent = finalContent.replace(`[[MEDIA_SHIELD_${i}]]`, mediaHtml);
+        mediaMetadata.forEach((meta, i) => {
+            const marker = `[[MEDIA_SHIELD_2_0_${i}]]`;
+
+            // Reconstruct a Gold Standard Iframe
+            let reconstructedHtml = '';
+            if (meta.type === 'youtube' || meta.type === 'vimeo' || meta.type === 'iframe') {
+                reconstructedHtml = `
+                    <div class="media-container">
+                        <iframe 
+                            src="${meta.src}" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen
+                        ></iframe>
+                        <div class="media-fallback">
+                            <a href="${meta.src}" target="_blank" rel="noopener noreferrer">
+                                📺 View Original ${meta.label} →
+                            </a>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Fallback for direct video/audio
+                reconstructedHtml = `
+                    <div class="media-container">
+                        <a href="${meta.src}" target="_blank" rel="noopener noreferrer" class="media-link-card">
+                            🎵 ${meta.label} detected: Open in new tab
+                        </a>
+                    </div>
+                `;
+            }
+
+            finalContent = finalContent.replace(marker, reconstructedHtml);
         });
 
         return NextResponse.json({

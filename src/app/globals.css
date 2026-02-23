@@ -987,14 +987,63 @@ a {
   text-underline-offset: 4px;
 }
 
-.reader-body iframe,
-.reader-body video {
+.media-container {
+  position: relative;
+  width: 100%;
+  margin: 40px 0;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.media-container iframe,
+.media-container video {
   width: 100%;
   aspect-ratio: 16 / 9;
+  display: block;
+}
+
+.media-fallback {
+  padding: 16px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+}
+
+.media-fallback a {
+  font-size: 14px;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(var(--accent-rgb), 0.1);
+  transition: all 0.2s ease;
+}
+
+.media-fallback a:hover {
+  background: rgba(var(--accent-rgb), 0.2);
+  transform: translateY(-1px);
+}
+
+.media-link-card {
+  display: block;
+  padding: 24px;
+  background: var(--surface);
   border-radius: 12px;
+  text-align: center;
+  color: var(--accent);
+  text-decoration: none;
   border: 1px solid var(--border);
-  margin: 32px 0;
-  background: #000;
+  transition: all 0.2s ease;
+}
+
+.media-link-card:hover {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.05);
 }
 
 .reader-loading {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import PostCard from '@/components/PostCard';
+import ReaderModal from '@/components/ReaderModal';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -24,6 +25,7 @@ export default function WideFeedPage() {
     const [pages, setPages] = useState(1);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
+    const [readingPost, setReadingPost] = useState<Post | null>(null);
 
     const fetchPosts = useCallback(async () => {
         setLoading(true);
@@ -63,7 +65,11 @@ export default function WideFeedPage() {
 
                     <div className="posts-grid">
                         {posts.map(post => (
-                            <PostCard key={post.id} post={post} />
+                            <PostCard
+                                key={post.id}
+                                post={post}
+                                onRead={(p) => setReadingPost(p)}
+                            />
                         ))}
                     </div>
 
@@ -81,6 +87,14 @@ export default function WideFeedPage() {
                 </div>
             </main>
             <Footer />
+
+            {readingPost && (
+                <ReaderModal
+                    url={readingPost.url}
+                    sourceName={readingPost.source_name}
+                    onClose={() => setReadingPost(null)}
+                />
+            )}
         </>
     );
 }

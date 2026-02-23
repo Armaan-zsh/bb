@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import PostCard from '@/components/PostCard';
+import ReaderModal from '@/components/ReaderModal';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -43,6 +44,7 @@ export default function HomePage() {
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [readingPost, setReadingPost] = useState<Post | null>(null);
   const [empty, setEmpty] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -142,7 +144,11 @@ export default function HomePage() {
           ) : (
             <div className="posts-grid">
               {posts.map(post => (
-                <PostCard key={post.id} post={post} />
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  onRead={(p) => setReadingPost(p)}
+                />
               ))}
               {loading && !posts.length && Array.from({ length: 12 }).map((_, i) => (
                 <div key={i} className="post-card" style={{ opacity: 0.3, minHeight: 160 }} />
@@ -165,6 +171,14 @@ export default function HomePage() {
         </div>
       </main>
       <Footer sourceCount={stats?.sourceCount} postCount={stats?.postCount} />
+
+      {readingPost && (
+        <ReaderModal
+          url={readingPost.url}
+          sourceName={readingPost.source_name}
+          onClose={() => setReadingPost(null)}
+        />
+      )}
     </>
   );
 }

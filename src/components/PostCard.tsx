@@ -24,7 +24,7 @@ function relativeDate(dateStr: string | null): string {
     }
 }
 
-export default function PostCard({ post }: { post: Post }) {
+export default function PostCard({ post, onRead }: { post: Post; onRead: (post: Post) => void }) {
     const date = relativeDate(post.published_at);
 
     return (
@@ -36,7 +36,7 @@ export default function PostCard({ post }: { post: Post }) {
                 {date && <span className="post-date">{date}</span>}
             </div>
 
-            <a href={post.url} target="_blank" rel="noopener noreferrer">
+            <a href={post.url} onClick={(e) => { e.preventDefault(); onRead(post); }}>
                 <h2 className="post-title">{post.title}</h2>
             </a>
         </article>

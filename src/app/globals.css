@@ -13,8 +13,9 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-:root {
+:root[data-theme="dark"] {
   --bg: #050505;
+  --bg-rgb: 5, 5, 5;
   --surface: #0a0a0a;
   --surface-2: #141414;
   --border: #1a1a1a;
@@ -24,11 +25,118 @@
   --text-faint: #555;
   --accent: #0071e3;
   --accent-soft: rgba(0, 113, 227, 0.15);
+}
+
+:root[data-theme="latte"] {
+  --bg: #fbf8ef;
+  --bg-rgb: 251, 248, 239;
+  --surface: #f2edda;
+  --surface-2: #e8e0c5;
+  --border: #dcd3b6;
+  --border-strong: #c8bca0;
+  --text: #433422;
+  --text-muted: #6f5e4b;
+  --text-faint: #a0907a;
+  --accent: #8b4513;
+  --accent-soft: rgba(139, 69, 19, 0.1);
+}
+
+:root[data-theme="ember"] {
+  --bg: #0d0c0b;
+  --bg-rgb: 13, 12, 11;
+  --surface: #1a1917;
+  --surface-2: #262421;
+  --border: #33302b;
+  --border-strong: #4a453d;
+  --text: #e6e1d6;
+  --text-muted: #b3ad9d;
+  --text-faint: #706a5e;
+  --accent: #ff8c00;
+  --accent-soft: rgba(255, 140, 0, 0.1);
+}
+
+:root[data-theme="nordic"] {
+  --bg: #2e3440;
+  --bg-rgb: 46, 52, 64;
+  --surface: #3b4252;
+  --surface-2: #434c5e;
+  --border: #4c566a;
+  --border-strong: #5e697d;
+  --text: #d8dee9;
+  --text-muted: #aeb3bb;
+  --text-faint: #616e88;
+  --accent: #88c0d0;
+  --accent-soft: rgba(136, 192, 208, 0.15);
+}
+
+:root {
+  --font-mono: 'Geist Mono', 'SF Mono', monospace;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: 'Geist Mono', 'SF Mono', monospace;
+
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+:root[data-theme="latte"] main {
+  background-image: radial-gradient(var(--text-faint) 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+  background-attachment: fixed;
+  opacity: 0.98;
+}
+
+/* ── THEME SWITCHER ─────────────────────────────────────── */
+
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 16px;
+}
+
+.theme-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+  padding: 0;
+  display: block;
+}
+
+.theme-swatch:hover {
+  transform: scale(1.2);
+}
+
+.theme-swatch.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--accent);
+}
+
+.swatch-dark {
+  background-color: #050505;
+}
+
+.swatch-latte {
+  background-color: #fbf8ef;
+}
+
+.swatch-ember {
+  background-color: #0d0c0b;
+}
+
+.swatch-nordic {
+  background-color: #2e3440;
 }
 
 html {
@@ -76,40 +184,67 @@ a {
 .site-wrapper {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 80px 40px 0;
 }
 
 /* ── HEADER ─────────────────────────────────────────────── */
 
 .site-header {
-  border-bottom: 1px solid var(--border);
-  padding: 8px 0;
-  position: sticky;
-  top: 0;
-  background: rgba(5, 5, 5, 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  z-index: 100;
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 48px);
+  max-width: 1200px;
+  background: rgba(var(--bg-rgb), 0.7);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  z-index: 1000;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+.site-header.shrunk {
+  max-width: 480px;
+  top: 12px;
+  background: rgba(var(--bg-rgb), 0.85);
+  border-color: var(--border-strong);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.site-header.shrunk:hover {
+  max-width: 1200px;
 }
 
 .site-header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 40px;
-  /* Reduced from 56px */
-  max-width: 1280px;
-  margin: 0 auto;
+  height: 52px;
   padding: 0 24px;
 }
 
+.site-header.shrunk .site-header-inner {
+  padding: 0 12px;
+}
+
 .site-logo {
-  font-size: 18px;
+  font-size: 19px;
   color: var(--text);
   white-space: nowrap;
   flex: 1;
-  /* Space taker */
   text-decoration: none;
+  opacity: 1;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s ease;
+}
+
+.site-header.shrunk:not(:hover) .site-logo {
+  opacity: 0;
+  transform: translateX(-20px);
+  pointer-events: none;
+  flex: 0;
 }
 
 .site-logo i strong {
@@ -211,10 +346,15 @@ a {
 .nav-tabs {
   display: flex;
   align-items: center;
-  gap: 32px;
-  /* Premium spacing */
-  flex: 0;
-  /* Content only, centered */
+  gap: 8px;
+}
+
+.site-header.shrunk:not(:hover) .nav-tabs {
+  gap: 4px;
+}
+
+.site-header.shrunk:not(:hover) .nav-tabs {
+  gap: 4px;
 }
 
 .nav-tabs::-webkit-scrollbar {
@@ -225,27 +365,51 @@ a {
   font-size: 13px;
   font-weight: 500;
   color: var(--text-muted);
-  padding: 5px 12px;
-  border-radius: var(--radius-sm);
-  border: none;
-  background: none;
+  padding: 6px 18px;
+  border-radius: 100px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  background: transparent;
   cursor: pointer;
   white-space: nowrap;
-  font-family: var(--font-sans);
+}
+
+.nav-tab:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.site-header.shrunk:not(:hover) .nav-tab {
+  padding: 6px 14px;
+  font-size: 12px;
 }
 
 .nav-tab.active {
-  background: var(--surface-2);
   color: var(--text);
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1.5px var(--border-strong);
 }
 
 /* ── SEARCH ─────────────────────────────────────────────── */
 
 .search-wrap {
-  flex: 1;
-  /* Space taker */
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s ease;
+}
+
+.site-header.shrunk:not(:hover) .search-wrap {
+  opacity: 0;
+  transform: translateX(20px);
+  pointer-events: none;
+  flex: 0;
+}
+
+.site-logo {
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .search-input {
@@ -372,7 +536,7 @@ a {
 .posts-grid {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 12px;
   margin-bottom: 64px;
 }
 

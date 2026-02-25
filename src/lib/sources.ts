@@ -220,4 +220,9 @@ export const SOURCES: Source[] = [
   // ── RESEARCH (ARXIV) ──────────────────────────────────────
   { name: "Arxiv: AI + ML", url: "https://rss.arxiv.org/rss/cs.AI+cs.LG", category: "misc", tier: 1 },
   { name: "Arxiv: Security", url: "https://rss.arxiv.org/rss/cs.CR", category: "security", tier: 1 },
+
+  // ── YOUTUBE CHANNELS ───────────────────────────────────────
+  { name: "Fireship", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCsBjURrPoezykLs9EqgamOA", category: "engineering", tier: 1 },
+  { name: "Computerphile", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC9-y-6csu5WGm29I7JiwpnA", category: "engineering", tier: 2 },
+  { name: "ThePrimeagen", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC8ENHE5xdFSwx71u3fDH5Xw", category: "individual", tier: 1 },
 ];

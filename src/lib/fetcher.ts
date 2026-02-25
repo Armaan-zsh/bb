@@ -104,8 +104,8 @@ async function fetchFeed(source: Source): Promise<number> {
     }
 
     const insertPost = db.prepare(`
-    INSERT OR IGNORE INTO posts (source_id, title, url, excerpt, published_at)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT OR IGNORE INTO posts (source_id, title, url, excerpt, content, published_at)
+    VALUES (?, ?, ?, ?, ?, ?)
   `);
 
     // SORT BY DATE (descending) and LIMIT to 15

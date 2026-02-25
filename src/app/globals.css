@@ -571,7 +571,8 @@ a {
 .ghost-citation {
   font-family: var(--font-sans);
   font-size: 0.75em;
-  color: var(--text-faint); /* Dim it */
+  color: var(--text-faint);
+  /* Dim it */
   text-decoration: none;
   vertical-align: super;
   margin-left: 2px;
@@ -869,27 +870,54 @@ a {
   }
 }
 
-.reader-close {
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-faint);
-  padding: 8px 16px;
-  border-radius: var(--radius-lg);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  z-index: 100;
-  transition: all 0.2s ease;
-  box-shadow: none;
+.reader-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--border);
 }
 
-.reader-close:hover {
-  background: var(--border);
+.reader-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.reader-back:hover {
   color: var(--text);
-  transform: scale(1.02);
+}
+
+.reader-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.reader-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.reader-action-btn:hover {
+  color: var(--text);
+  transform: scale(1.1);
 }
 
 .reader-meta {

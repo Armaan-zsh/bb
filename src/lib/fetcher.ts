@@ -1,5 +1,6 @@
 import Parser from 'rss-parser';
 import { htmlToText } from 'html-to-text';
+import { YoutubeTranscript } from 'youtube-transcript';
 import { getDb } from './db';
 import { SOURCES, Source } from './sources';
 
@@ -23,6 +24,34 @@ function cleanExcerpt(raw: string | undefined): string {
     if (trimmed.length <= 280) return trimmed;
     const cut = trimmed.substring(0, 280);
     return cut.substring(0, cut.lastIndexOf(' ')) + '…';
+}
+
+function extractYouTubeId(url: string): string | null {
+    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?]+)/);
+    return match ? match[1] : null;
+}
+
+async function fetchYouTubeTranscript(videoId: string): Promise<string | null> {
+    try {
+        const transcript = await YoutubeTranscript.fetchTranscript(videoId);
+        let formattedText = '';
+        let lastOffsetBlock = -1;
+
+        for (const item of transcript) {
+            const currentBlock = Math.floor(item.offset / 60000); // 60 seconds (in ms)
+            if (currentBlock > lastOffsetBlock && formattedText.length > 0) {
+                formattedText += '\n\n'; // inject markdown line break for paragraphing
+                lastOffsetBlock = currentBlock;
+            } else if (formattedText.length > 0) {
+                formattedText += ' ';
+            }
+            formattedText += item.text;
+        }
+        return formattedText;
+    } catch (e) {
+        console.warn(`\n   [X] Transcript failed for ${videoId}:`, e);
+        return null; // Fallback to standard flow if transcript is disabled/unavailable
+    }
 }
 
 function ensureSource(name: string, url: string, category: string, tier: number): number {
@@ -103,15 +132,30 @@ async function fetchFeed(source: Source): Promise<number> {
     let inserted = 0;
     for (const item of items) {
         const rawItem = item as any;
-        const rawContent = rawItem.contentEncoded || rawItem.content || rawItem.description || rawItem.summary || '';
+        const link = item.link!.trim();
+        const youtubeId = extractYouTubeId(link);
+
+        let rawContent = rawItem.contentEncoded || rawItem.content || rawItem.description || rawItem.summary || '';
+
+        // --- GHOST VIDEO EXTRACTOR ---
+        if (youtubeId) {
+            console.log(`\n   [YT] Intercepted YouTube link. Fetching transcript for ${youtubeId}...`);
+            const transcriptText = await fetchYouTubeTranscript(youtubeId);
+            if (transcriptText) {
+                // Prepend a markdown indicator to signal it's a video transcript
+                rawContent = `*YouTube Video Transcript*\n\n${transcriptText}`;
+            }
+        }
+
         const excerpt = cleanExcerpt(rawContent);
         const pubDate = item.isoDate || item.pubDate || null;
 
         const result = insertPost.run(
             sourceId,
             item.title!.trim(),
-            item.link!.trim(),
+            link,
             excerpt || null,
+            rawContent || null, // Pass full content to FTS5 schema
             pubDate
         );
         if (result.changes > 0) inserted++;

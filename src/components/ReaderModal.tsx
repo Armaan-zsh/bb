@@ -1,48 +1,42 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-interface Article {
-    title: string;
-    content: string;
-    byline?: string;
-    siteName?: string;
-}
+import { useState, useEffect } from 'react';
+import { linkifyAcademic } from '@/lib/zettelkasten';
 
 interface ReaderModalProps {
-    url: string;
-    sourceName: string;
+    post: {
+        title: string;
+        url: string;
+        source_name: string;
+    } | null;
     onClose: () => void;
 }
 
-export default function ReaderModal({ url, sourceName, onClose }: ReaderModalProps) {
-    const [article, setArticle] = useState<Article | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+export default function ReaderModal({ post, onClose }: ReaderModalProps) {
+    const [content, setContent] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     useEffect(() => {
+        if (!post) return;
+
         // Disable scrolling behind modal
         document.body.style.overflow = 'hidden';
 
-        async function fetchContent() {
-            try {
-                const res = await fetch(`/api/content?url=${encodeURIComponent(url)}`);
-                if (!res.ok) throw new Error('Failed to load content');
-                const data = await res.json();
-                setArticle(data);
-            } catch (err: any) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
+        // 'Invisible UI' Zero-Latency Render:
+        // We no longer fetch from /api/content. The full text is already pre-loaded via RSC.
+        try {
+            const rawContent = (post as any).content || 'Content could not be loaded from database.'; // cast to any temporarily as we haven't updated the PostRow type in FeedClient yet
+            const linkedHtml = linkifyAcademic(rawContent);
+            setContent(linkedHtml);
+        } catch (err: any) {
+            setError('Error parsing Zettelkasten links.');
         }
-
-        fetchContent();
 
         return () => {
             document.body.style.overflow = 'unset';
         };
-    }, [url]);
+    }, [post]);
 
     // Close on Escape key
     useEffect(() => {
@@ -59,7 +53,26 @@ export default function ReaderModal({ url, sourceName, onClose }: ReaderModalPro
                 className="reader-content"
                 onClick={(e) => e.stopPropagation()}
             >
-                <button className="reader-close" onClick={onClose}>Close (Esc)</button>
+                <div className="reader-header">
+                    <button className="reader-back" onClick={onClose}>
+                        <span style={{ fontSize: 20 }}>←</span>
+                        <span>Feed</span>
+                    </button>
+                    <div className="reader-actions">
+                        <button
+                            className="reader-action-btn"
+                            onClick={() => {
+                                navigator.clipboard.writeText(post?.url || '');
+                            }}
+                            title="Copy Link"
+                        >
+                            <span style={{ fontSize: 18 }}>🔗</span>
+                        </button>
+                        <button className="reader-action-btn" onClick={onClose}>
+                            <span style={{ fontSize: 18 }}>×</span>
+                        </button>
+                    </div>
+                </div>
 
                 <div className="reader-scroll-area">
                     {loading ? (
@@ -70,34 +83,31 @@ export default function ReaderModal({ url, sourceName, onClose }: ReaderModalPro
                     ) : error ? (
                         <div className="reader-loading">
                             <span>{error}</span>
-                            <a href={url} target="_blank" rel="noopener noreferrer" className="nav-tab">
-                                View Original Source
-                            </a>
+                            {post && (
+                                <a href={post.url} target="_blank" rel="noopener noreferrer" className="nav-tab">
+                                    View Original Source
+                                </a>
+                            )}
                         </div>
-                    ) : (
+                    ) : post ? (
                         <article>
                             <div className="reader-meta">
-                                <div className="reader-source">{sourceName}</div>
-                                <h1 className="reader-title">{article?.title}</h1>
-                                {article?.byline && (
-                                    <div style={{ marginTop: 8, fontSize: 13, color: 'var(--text-faint)' }}>
-                                        By {article.byline}
-                                    </div>
-                                )}
+                                <div className="reader-source">{post.source_name}</div>
+                                <h1 className="reader-title">{post.title}</h1>
                             </div>
 
                             <div
                                 className="reader-body"
-                                dangerouslySetInnerHTML={{ __html: article?.content || '' }}
+                                dangerouslySetInnerHTML={{ __html: content }}
                             />
 
                             <div style={{ marginTop: 64, borderTop: '1px solid var(--border)', paddingTop: 32 }}>
-                                <a href={url} target="_blank" rel="noopener noreferrer" className="nav-tab">
-                                    Read original on {article?.siteName || sourceName} →
+                                <a href={post.url} target="_blank" rel="noopener noreferrer" className="nav-tab">
+                                    Read original on {post.source_name} →
                                 </a>
                             </div>
                         </article>
-                    )}
+                    ) : null}
                 </div>
             </div>
         </div>

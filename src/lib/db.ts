@@ -43,6 +43,7 @@ function initSchema(db: Database.Database) {
       title        TEXT NOT NULL,
       url          TEXT NOT NULL UNIQUE,
       excerpt      TEXT,
+      content      TEXT,
       published_at TEXT,
       fetched_at   TEXT NOT NULL DEFAULT (datetime('now')),
       FOREIGN KEY (source_id) REFERENCES sources(id) ON DELETE CASCADE
@@ -52,20 +53,21 @@ function initSchema(db: Database.Database) {
     CREATE VIRTUAL TABLE IF NOT EXISTS posts_fts USING fts5(
       title,
       excerpt,
+      content,
       content=posts,
       content_rowid=id
     );
 
     -- Keep FTS index in sync
     CREATE TRIGGER IF NOT EXISTS posts_ai AFTER INSERT ON posts BEGIN
-      INSERT INTO posts_fts(rowid, title, excerpt) VALUES (new.id, new.title, new.excerpt);
+      INSERT INTO posts_fts(rowid, title, excerpt, content) VALUES (new.id, new.title, new.excerpt, new.content);
     END;
     CREATE TRIGGER IF NOT EXISTS posts_ad AFTER DELETE ON posts BEGIN
-      INSERT INTO posts_fts(posts_fts, rowid, title, excerpt) VALUES ('delete', old.id, old.title, old.excerpt);
+      INSERT INTO posts_fts(posts_fts, rowid, title, excerpt, content) VALUES ('delete', old.id, old.title, old.excerpt, old.content);
     END;
     CREATE TRIGGER IF NOT EXISTS posts_au AFTER UPDATE ON posts BEGIN
-      INSERT INTO posts_fts(posts_fts, rowid, title, excerpt) VALUES ('delete', old.id, old.title, old.excerpt);
-      INSERT INTO posts_fts(rowid, title, excerpt) VALUES (new.id, new.title, new.excerpt);
+      INSERT INTO posts_fts(posts_fts, rowid, title, excerpt, content) VALUES ('delete', old.id, old.title, old.excerpt, old.content);
+      INSERT INTO posts_fts(rowid, title, excerpt, content) VALUES (new.id, new.title, new.excerpt, new.content);
     END;
 
     CREATE INDEX IF NOT EXISTS idx_posts_source ON posts(source_id);
@@ -84,6 +86,7 @@ export interface PostRow {
   title: string;
   url: string;
   excerpt: string | null;
+  content: string | null;
   published_at: string | null;
   fetched_at: string;
 }

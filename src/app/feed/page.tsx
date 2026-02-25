@@ -89,8 +89,7 @@ export default function WideFeedPage() {
 
             {readingPost && (
                 <ReaderModal
-                    url={readingPost.url}
-                    sourceName={readingPost.source_name}
+                    post={readingPost}
                     onClose={() => setReadingPost(null)}
                 />
             )}

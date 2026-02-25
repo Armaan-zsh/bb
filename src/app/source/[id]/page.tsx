@@ -35,6 +35,7 @@ export default function SourcePage() {
     const [source, setSource] = useState<Source | null>(null);
     const [posts, setPosts] = useState<Post[]>([]);
     const [total, setTotal] = useState(0);
+    const [readingPost, setReadingPost] = useState<Post | null>(null);
 
     useEffect(() => {
         if (!id) return;
@@ -82,7 +83,7 @@ export default function SourcePage() {
                     ) : (
                         <div className="posts-grid">
                             {posts.map(post => (
-                                <PostCard key={post.id} post={post} />
+                                <PostCard key={post.id} post={post} onRead={(p) => setReadingPost(p as any)} />
                             ))}
                         </div>
                     )}

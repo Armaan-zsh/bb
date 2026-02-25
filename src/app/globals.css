@@ -566,6 +566,22 @@ a {
   overflow: hidden;
 }
 
+/* ── ZETTELKASTEN / RESEARCH PULSE ──────────────────────── */
+
+.ghost-citation {
+  font-family: var(--font-sans);
+  font-size: 0.75em;
+  color: var(--text-faint); /* Dim it */
+  text-decoration: none;
+  vertical-align: super;
+  margin-left: 2px;
+  transition: color 0.2s ease;
+}
+
+.ghost-citation:hover {
+  color: var(--accent);
+}
+
 .post-card-footer {
   display: flex;
   justify-content: space-between;

@@ -31,6 +31,7 @@ const CATEGORIES = [
     { key: 'engineering', label: 'Engineering' },
     { key: 'security', label: 'Security' },
     { key: 'individual', label: 'Individual' },
+    { key: 'knowledge', label: 'Knowledge' },
     { key: 'language', label: 'Languages' },
     { key: 'misc', label: 'Research' },
 ];

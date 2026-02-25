@@ -1,4 +1,4 @@
-export type SourceCategory = 'engineering' | 'security' | 'individual' | 'language' | 'misc';
+export type SourceCategory = 'engineering' | 'security' | 'individual' | 'language' | 'misc' | 'knowledge';
 export type SourceTier = 1 | 2 | 3;
 
 export interface Source {
@@ -225,4 +225,77 @@ export const SOURCES: Source[] = [
   { name: "Fireship", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCsBjURrPoezykLs9EqgamOA", category: "engineering", tier: 1 },
   { name: "Computerphile", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC9-y-6csu5WGm29I7JiwpnA", category: "engineering", tier: 2 },
   { name: "ThePrimeagen", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC8ENHE5xdFSwx71u3fDH5Xw", category: "individual", tier: 1 },
+
+  // ── INVESTIGATIVE JOURNALISM ────────────────────────────────
+  { name: "ProPublica", url: "https://feeds.propublica.org/propublica/main", category: "knowledge", tier: 1 },
+  { name: "The Intercept", url: "https://theintercept.com/feed/?rss", category: "knowledge", tier: 1 },
+  { name: "Bellingcat", url: "https://www.bellingcat.com/feed/", category: "knowledge", tier: 1 },
+  { name: "The Markup", url: "https://themarkup.org/feeds/rss.xml", category: "knowledge", tier: 1 },
+  { name: "Rest of World", url: "https://restofworld.org/feed/", category: "knowledge", tier: 1 },
+  { name: "404 Media", url: "https://www.404media.co/rss/", category: "knowledge", tier: 1 },
+  { name: "OCCRP", url: "https://www.occrp.org/en/rss/daily", category: "knowledge", tier: 2 },
+  { name: "ICIJ", url: "https://www.icij.org/feed/", category: "knowledge", tier: 2 },
+  { name: "Reveal News", url: "https://revealnews.org/feed/", category: "knowledge", tier: 2 },
+
+  // ── DIGITAL RIGHTS & PRIVACY ───────────────────────────────
+  { name: "EFF Deeplinks", url: "https://www.eff.org/rss/updates.xml", category: "knowledge", tier: 1 },
+  { name: "Access Now", url: "https://www.accessnow.org/feed/", category: "knowledge", tier: 1 },
+  { name: "Privacy Guides", url: "https://blog.privacyguides.org/feed_rss_created.xml", category: "knowledge", tier: 1 },
+  { name: "Fight for the Future", url: "https://www.fightforthefuture.org/news.rss", category: "knowledge", tier: 2 },
+  { name: "CDT (Center for Democracy & Technology)", url: "https://cdt.org/feed/", category: "knowledge", tier: 2 },
+  { name: "EPIC (Electronic Privacy Information Center)", url: "https://epic.org/feed/", category: "knowledge", tier: 2 },
+  { name: "European Digital Rights (EDRi)", url: "https://edri.org/feed/", category: "knowledge", tier: 2 },
+  { name: "Netzpolitik.org", url: "https://netzpolitik.org/feed/", category: "knowledge", tier: 2 },
+  { name: "Surveillance Self-Defense", url: "https://ssd.eff.org/rss.xml", category: "knowledge", tier: 2 },
+
+  // ── CONSUMER RIGHTS & RIGHT TO REPAIR ──────────────────────
+  { name: "iFixit News", url: "https://www.ifixit.com/News.rss", category: "knowledge", tier: 1 },
+  { name: "Repair.org", url: "https://www.repair.org/blog?format=rss", category: "knowledge", tier: 2 },
+  { name: "Consumer Reports", url: "https://www.consumerreports.org/feeds/latest.rss", category: "knowledge", tier: 1 },
+  { name: "Public Citizen", url: "https://www.citizen.org/feed/", category: "knowledge", tier: 2 },
+  { name: "Public Knowledge", url: "https://publicknowledge.org/feed/", category: "knowledge", tier: 2 },
+
+  // ── OSINT & OPEN SOURCE INTELLIGENCE ───────────────────────
+  { name: "OSINT Curious", url: "https://osintcurio.us/feed/", category: "knowledge", tier: 1 },
+  { name: "Hatless1der OSINT", url: "https://hatless1der.com/feed/", category: "knowledge", tier: 2 },
+  { name: "Sector035 OSINT", url: "https://sector035.nl/feed.xml", category: "knowledge", tier: 2 },
+  { name: "NixIntel OSINT", url: "https://nixintel.info/feed/", category: "knowledge", tier: 2 },
+  { name: "Webbreacher OSINT", url: "https://webbreacher.com/feed/", category: "knowledge", tier: 2 },
+
+  // ── OPEN SOURCE & FREE SOFTWARE ────────────────────────────
+  { name: "FSF News", url: "https://www.fsf.org/static/fsforg/rss/news.xml", category: "knowledge", tier: 1 },
+  { name: "FOSS Post", url: "https://fosspost.org/feed", category: "knowledge", tier: 2 },
+  { name: "It's FOSS", url: "https://itsfoss.com/rss/", category: "knowledge", tier: 2 },
+  { name: "Open Source Initiative", url: "https://blog.opensource.org/feed/", category: "knowledge", tier: 2 },
+  { name: "Linux Foundation", url: "https://www.linuxfoundation.org/feed", category: "knowledge", tier: 2 },
+  { name: "OMG Linux", url: "https://www.omglinux.com/feed", category: "knowledge", tier: 2 },
+  { name: "Phoronix", url: "https://www.phoronix.com/rss.php", category: "knowledge", tier: 2 },
+
+  // ── THINK TANKS & POLICY ───────────────────────────────────
+  { name: "Brookings TechTank", url: "https://www.brookings.edu/topic/technology/feed/", category: "knowledge", tier: 2 },
+  { name: "MIT Technology Review", url: "https://www.technologyreview.com/feed/", category: "knowledge", tier: 1 },
+  { name: "Freedom of the Press", url: "https://freedom.press/news/rss/", category: "knowledge", tier: 1 },
+
+  // ── ENVIRONMENT & SUSTAINABILITY ───────────────────────────
+  { name: "Grist", url: "https://grist.org/feed/", category: "knowledge", tier: 2 },
+  { name: "Low-Tech Magazine", url: "https://solar.lowtechmagazine.com/feeds/all-en.atom.xml", category: "knowledge", tier: 1 },
+  { name: "Resilience.org", url: "https://www.resilience.org/feed/", category: "knowledge", tier: 2 },
+
+  // ── INDEPENDENT MEDIA & ALTERNATIVE PRESS ──────────────────
+  { name: "Cory Doctorow (Pluralistic)", url: "https://pluralistic.net/feed/", category: "knowledge", tier: 1 },
+  { name: "Techdirt", url: "https://www.techdirt.com/feed/", category: "knowledge", tier: 1 },
+  { name: "Consortiumnews", url: "https://consortiumnews.com/feed/", category: "knowledge", tier: 2 },
+  { name: "Common Dreams", url: "https://www.commondreams.org/rss.xml", category: "knowledge", tier: 2 },
+
+  // ── DATA, TRANSPARENCY & ACCOUNTABILITY ────────────────────
+  { name: "Sunlight Foundation", url: "https://sunlightfoundation.com/feed/", category: "knowledge", tier: 2 },
+  { name: "Open Secrets", url: "https://www.opensecrets.org/news/feed/", category: "knowledge", tier: 2 },
+  { name: "Data is Plural", url: "https://www.data-is-plural.com/feed.xml", category: "knowledge", tier: 1 },
+  { name: "Our World in Data", url: "https://ourworldindata.org/atom.xml", category: "knowledge", tier: 1 },
+  { name: "GovTrack", url: "https://www.govtrack.us/events/events.rss", category: "knowledge", tier: 2 },
+
+  // ── WIKI & REFERENCE SITES ─────────────────────────────────
+  { name: "Wikipedia: Current Events", url: "https://en.wikipedia.org/w/index.php?title=Portal:Current_events&action=raw&feed=atom", category: "knowledge", tier: 2 },
+  { name: "Wikimedia Blog", url: "https://diff.wikimedia.org/feed/", category: "knowledge", tier: 2 },
+  { name: "Internet Archive Blog", url: "https://blog.archive.org/feed/", category: "knowledge", tier: 1 },
 ];

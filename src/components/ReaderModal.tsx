@@ -31,13 +31,36 @@ export default function ReaderModal({ post, onClose }: ReaderModalProps) {
 
         // Step 2: Fetch the FULL article from the original source in the background
         const fetchFull = async () => {
-            setLoading(true);
             try {
-                const res = await fetch(`/api/content?url=${encodeURIComponent(post.url)}`);
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.content) {
-                        setContent(linkifyAcademic(data.content));
+                // Determine if it's a YouTube link
+                const ytMatch = post.url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?]+)/);
+                if (ytMatch && ytMatch[1]) {
+                    setLoading(true);
+                    const videoId = ytMatch[1];
+                    const res = await fetch(`/api/transcript?videoId=${videoId}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.text) {
+                            const htmlText = data.text.split('\n\n')
+                                .filter((p: string) => p.trim().length > 0)
+                                .map((p: string) => `<p>${p}</p>`)
+                                .join('');
+                            setContent(linkifyAcademic(`
+                                <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
+                                    <p style="color: var(--text-muted); font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.05em;">Auto-Generated Transcript</p>
+                                </div>
+                                ${htmlText}
+                            `));
+                        }
+                    }
+                } else {
+                    setLoading(true);
+                    const res = await fetch(`/api/content?url=${encodeURIComponent(post.url)}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.content) {
+                            setContent(linkifyAcademic(data.content));
+                        }
                     }
                 }
             } catch {

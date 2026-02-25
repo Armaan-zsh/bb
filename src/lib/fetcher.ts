@@ -97,7 +97,10 @@ async function fetchFeed(source: Source): Promise<number> {
 
     let feed;
     try {
-        feed = await parser.parseString(xml);
+        // Sanitize common XML errors (like unescaped ampersands from DeepWiki/Apple)
+        // We only replace & that are NOT already part of an entity (like &amp; or &#123;)
+        const sanitizedXml = xml.replace(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#[xX][0-9a-fA-F]+;)/g, '&amp;');
+        feed = await parser.parseString(sanitizedXml);
     } catch (err: any) {
         console.error(`\n   [X] Parse failed: ${source.name} (${source.url}) - ${err.message}`);
         return 0;
@@ -137,15 +140,10 @@ async function fetchFeed(source: Source): Promise<number> {
 
         let rawContent = rawItem.contentEncoded || rawItem.content || rawItem.description || rawItem.summary || '';
 
-        // --- GHOST VIDEO EXTRACTOR ---
-        if (youtubeId) {
-            console.log(`\n   [YT] Intercepted YouTube link. Fetching transcript for ${youtubeId}...`);
-            const transcriptText = await fetchYouTubeTranscript(youtubeId);
-            if (transcriptText) {
-                // Prepend a markdown indicator to signal it's a video transcript
-                rawContent = `*YouTube Video Transcript*\n\n${transcriptText}`;
-            }
-        }
+        // --- GHOST VIDEO EXTRACTOR (REMOVED) ---
+        // YouTube actively blocks data-center IPs during batch scraping (RequestBlocked 429).
+        // Transcripts are now fetched entirely client-side on-demand via /api/transcript 
+        // when the user actually opens a YouTube video in the Reader Mode.
 
         const excerpt = cleanExcerpt(rawContent);
         const pubDate = item.isoDate || item.pubDate || null;

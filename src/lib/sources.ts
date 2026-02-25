@@ -233,6 +233,7 @@ export const SOURCES: Source[] = [
   { name: "The Markup", url: "https://themarkup.org/feeds/rss.xml", category: "knowledge", tier: 1 },
   { name: "Rest of World", url: "https://restofworld.org/feed/", category: "knowledge", tier: 1 },
   { name: "404 Media", url: "https://www.404media.co/rss/", category: "knowledge", tier: 1 },
+  { name: "DeepWiki", url: "https://deepwiki.com/feed.xml", category: "knowledge", tier: 1 },
   { name: "OCCRP", url: "https://www.occrp.org/en/rss/daily", category: "knowledge", tier: 2 },
   { name: "ICIJ", url: "https://www.icij.org/feed/", category: "knowledge", tier: 2 },
   { name: "Reveal News", url: "https://revealnews.org/feed/", category: "knowledge", tier: 2 },

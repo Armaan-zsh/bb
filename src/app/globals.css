@@ -840,6 +840,11 @@ a {
   flex-direction: column;
   overflow: hidden;
   /* Round corners stay sharp */
+  transition: max-width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reader-content.is-youtube {
+  max-width: 1100px;
 }
 
 .reader-scroll-area {
@@ -850,6 +855,10 @@ a {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+}
+
+.reader-content.is-youtube .reader-scroll-area {
+  padding: 40px 60px;
 }
 
 .reader-scroll-area::-webkit-scrollbar {

@@ -16,6 +16,7 @@ interface ReaderModalProps {
 export default function ReaderModal({ post, onClose }: ReaderModalProps) {
     const [content, setContent] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isYouTube, setIsYouTube] = useState(false);
 
     useEffect(() => {
         if (!post) return;
@@ -35,24 +36,21 @@ export default function ReaderModal({ post, onClose }: ReaderModalProps) {
                 // Determine if it's a YouTube link
                 const ytMatch = post.url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?]+)/);
                 if (ytMatch && ytMatch[1]) {
-                    setLoading(true);
+                    setIsYouTube(true);
                     const videoId = ytMatch[1];
-                    const res = await fetch(`/api/transcript?videoId=${videoId}`);
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (data.text) {
-                            const htmlText = data.text.split('\n\n')
-                                .filter((p: string) => p.trim().length > 0)
-                                .map((p: string) => `<p>${p}</p>`)
-                                .join('');
-                            setContent(linkifyAcademic(`
-                                <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
-                                    <p style="color: var(--text-muted); font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.05em;">Auto-Generated Transcript</p>
-                                </div>
-                                ${htmlText}
-                            `));
-                        }
-                    }
+                    setContent(linkifyAcademic(`
+                        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 2rem;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" 
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div style="text-align: center; color: var(--text-muted); font-size: 0.9em;">
+                            <p>Playing in Distraction-Free Mode</p>
+                        </div>
+                    `));
                 } else {
                     setLoading(true);
                     const res = await fetch(`/api/content?url=${encodeURIComponent(post.url)}`);
@@ -89,7 +87,7 @@ export default function ReaderModal({ post, onClose }: ReaderModalProps) {
     return (
         <div className="reader-overlay" onClick={onClose}>
             <div
-                className="reader-content"
+                className={`reader-content ${isYouTube ? 'is-youtube' : ''}`}
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="reader-scroll-area">

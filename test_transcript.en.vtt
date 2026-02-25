@@ -1,0 +1,560 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:00.080 --> 00:00:03.110 align:start position:0%
+ 
+The<00:00:00.320><c> Tanstack</c><00:00:00.960><c> start,</c><00:00:01.439><c> a</c><00:00:01.680><c> DX</c><00:00:02.159><c> optimized</c><00:00:02.800><c> full</c>
+
+00:00:03.110 --> 00:00:03.120 align:start position:0%
+The Tanstack start, a DX optimized full
+ 
+
+00:00:03.120 --> 00:00:05.030 align:start position:0%
+The Tanstack start, a DX optimized full
+stack<00:00:03.439><c> framework</c><00:00:04.000><c> that</c><00:00:04.319><c> comes</c><00:00:04.480><c> with</c><00:00:04.720><c> full</c>
+
+00:00:05.030 --> 00:00:05.040 align:start position:0%
+stack framework that comes with full
+ 
+
+00:00:05.040 --> 00:00:06.869 align:start position:0%
+stack framework that comes with full
+document<00:00:05.520><c> serverside</c><00:00:06.080><c> rendering,</c>
+
+00:00:06.869 --> 00:00:06.879 align:start position:0%
+document serverside rendering,
+ 
+
+00:00:06.879 --> 00:00:08.870 align:start position:0%
+document serverside rendering,
+streaming,<00:00:07.600><c> server</c><00:00:07.919><c> functions,</c><00:00:08.639><c> and</c>
+
+00:00:08.870 --> 00:00:08.880 align:start position:0%
+streaming, server functions, and
+ 
+
+00:00:08.880 --> 00:00:10.950 align:start position:0%
+streaming, server functions, and
+bundling<00:00:09.440><c> built</c><00:00:09.679><c> by</c><00:00:09.840><c> Tanner</c><00:00:10.240><c> Lindsay,</c><00:00:10.719><c> the</c>
+
+00:00:10.950 --> 00:00:10.960 align:start position:0%
+bundling built by Tanner Lindsay, the
+ 
+
+00:00:10.960 --> 00:00:12.709 align:start position:0%
+bundling built by Tanner Lindsay, the
+man<00:00:11.200><c> known</c><00:00:11.360><c> for</c><00:00:11.599><c> brutally</c><00:00:12.080><c> frame</c><00:00:12.400><c> mogging</c>
+
+00:00:12.709 --> 00:00:12.719 align:start position:0%
+man known for brutally frame mogging
+ 
+
+00:00:12.719 --> 00:00:15.350 align:start position:0%
+man known for brutally frame mogging
+Nex.js<00:00:13.599><c> while</c><00:00:13.840><c> it</c><00:00:14.080><c> was</c><00:00:14.160><c> busy</c><00:00:14.480><c> gesture</c><00:00:14.960><c> maxing</c>
+
+00:00:15.350 --> 00:00:15.360 align:start position:0%
+Nex.js while it was busy gesture maxing
+ 
+
+00:00:15.360 --> 00:00:17.510 align:start position:0%
+Nex.js while it was busy gesture maxing
+AI<00:00:15.759><c> empowerment.</c><00:00:16.480><c> React</c><00:00:16.880><c> was</c><00:00:17.119><c> originally</c>
+
+00:00:17.510 --> 00:00:17.520 align:start position:0%
+AI empowerment. React was originally
+ 
+
+00:00:17.520 --> 00:00:19.750 align:start position:0%
+AI empowerment. React was originally
+created<00:00:17.840><c> in</c><00:00:18.080><c> 2013</c><00:00:18.880><c> as</c><00:00:19.119><c> a</c><00:00:19.279><c> way</c><00:00:19.359><c> to</c><00:00:19.520><c> let</c>
+
+00:00:19.750 --> 00:00:19.760 align:start position:0%
+created in 2013 as a way to let
+ 
+
+00:00:19.760 --> 00:00:21.349 align:start position:0%
+created in 2013 as a way to let
+developers<00:00:20.160><c> at</c><00:00:20.400><c> Facebook,</c><00:00:20.880><c> who</c><00:00:21.039><c> had</c><00:00:21.279><c> been</c>
+
+00:00:21.349 --> 00:00:21.359 align:start position:0%
+developers at Facebook, who had been
+ 
+
+00:00:21.359 --> 00:00:22.870 align:start position:0%
+developers at Facebook, who had been
+labeled<00:00:21.680><c> as</c><00:00:21.840><c> gifted</c><00:00:22.240><c> children</c><00:00:22.560><c> when</c><00:00:22.720><c> they</c>
+
+00:00:22.870 --> 00:00:22.880 align:start position:0%
+labeled as gifted children when they
+ 
+
+00:00:22.880 --> 00:00:24.710 align:start position:0%
+labeled as gifted children when they
+were<00:00:23.039><c> young,</c><00:00:23.439><c> feel</c><00:00:23.680><c> better</c><00:00:23.920><c> about</c><00:00:24.160><c> themselves</c>
+
+00:00:24.710 --> 00:00:24.720 align:start position:0%
+were young, feel better about themselves
+ 
+
+00:00:24.720 --> 00:00:26.550 align:start position:0%
+were young, feel better about themselves
+after<00:00:25.039><c> being</c><00:00:25.199><c> forced</c><00:00:25.519><c> to</c><00:00:25.600><c> write</c><00:00:25.840><c> jQuery</c><00:00:26.320><c> all</c>
+
+00:00:26.550 --> 00:00:26.560 align:start position:0%
+after being forced to write jQuery all
+ 
+
+00:00:26.560 --> 00:00:26.870 align:start position:0%
+after being forced to write jQuery all
+day.
+
+00:00:26.870 --> 00:00:26.880 align:start position:0%
+day.
+ 
+
+00:00:26.880 --> 00:00:28.550 align:start position:0%
+day.
+&gt;&gt; That's<00:00:27.119><c> too</c><00:00:27.359><c> easy.</c><00:00:27.680><c> Its</c><00:00:28.000><c> goal</c><00:00:28.160><c> was</c><00:00:28.320><c> to</c>
+
+00:00:28.550 --> 00:00:28.560 align:start position:0%
+&gt;&gt; That's too easy. Its goal was to
+ 
+
+00:00:28.560 --> 00:00:30.470 align:start position:0%
+&gt;&gt; That's too easy. Its goal was to
+simplify<00:00:29.039><c> the</c><00:00:29.199><c> complexities</c><00:00:29.840><c> of</c><00:00:30.000><c> managing</c>
+
+00:00:30.470 --> 00:00:30.480 align:start position:0%
+simplify the complexities of managing
+ 
+
+00:00:30.480 --> 00:00:32.549 align:start position:0%
+simplify the complexities of managing
+state<00:00:30.720><c> in</c><00:00:30.960><c> front-end</c><00:00:31.439><c> applications.</c><00:00:32.320><c> In</c>
+
+00:00:32.549 --> 00:00:32.559 align:start position:0%
+state in front-end applications. In
+ 
+
+00:00:32.559 --> 00:00:34.790 align:start position:0%
+state in front-end applications. In
+2016,<00:00:33.280><c> it</c><00:00:33.440><c> then</c><00:00:33.680><c> escaped</c><00:00:34.000><c> the</c><00:00:34.239><c> browser</c><00:00:34.640><c> with</c>
+
+00:00:34.790 --> 00:00:34.800 align:start position:0%
+2016, it then escaped the browser with
+ 
+
+00:00:34.800 --> 00:00:37.350 align:start position:0%
+2016, it then escaped the browser with
+the<00:00:35.040><c> release</c><00:00:35.200><c> of</c><00:00:35.440><c> Verscell's</c><00:00:36.000><c> Nex.js,</c><00:00:36.800><c> a</c><00:00:37.040><c> zero</c>
+
+00:00:37.350 --> 00:00:37.360 align:start position:0%
+the release of Verscell's Nex.js, a zero
+ 
+
+00:00:37.360 --> 00:00:39.430 align:start position:0%
+the release of Verscell's Nex.js, a zero
+config<00:00:37.760><c> framework</c><00:00:38.239><c> built</c><00:00:38.480><c> on</c><00:00:38.640><c> top</c><00:00:38.800><c> of</c><00:00:38.960><c> React</c>
+
+00:00:39.430 --> 00:00:39.440 align:start position:0%
+config framework built on top of React
+ 
+
+00:00:39.440 --> 00:00:41.190 align:start position:0%
+config framework built on top of React
+that<00:00:39.680><c> offered</c><00:00:40.000><c> server</c><00:00:40.320><c> rendering</c><00:00:40.800><c> out</c><00:00:40.960><c> of</c><00:00:41.040><c> the</c>
+
+00:00:41.190 --> 00:00:41.200 align:start position:0%
+that offered server rendering out of the
+ 
+
+00:00:41.200 --> 00:00:43.350 align:start position:0%
+that offered server rendering out of the
+box.<00:00:41.680><c> At</c><00:00:41.920><c> first,</c><00:00:42.160><c> it</c><00:00:42.320><c> was</c><00:00:42.480><c> pretty</c><00:00:42.640><c> nice.</c><00:00:43.120><c> It</c>
+
+00:00:43.350 --> 00:00:43.360 align:start position:0%
+box. At first, it was pretty nice. It
+ 
+
+00:00:43.360 --> 00:00:45.030 align:start position:0%
+box. At first, it was pretty nice. It
+taught<00:00:43.600><c> millions</c><00:00:43.920><c> of</c><00:00:44.000><c> boot</c><00:00:44.320><c> camp</c><00:00:44.559><c> grads</c><00:00:44.879><c> what</c>
+
+00:00:45.030 --> 00:00:45.040 align:start position:0%
+taught millions of boot camp grads what
+ 
+
+00:00:45.040 --> 00:00:46.950 align:start position:0%
+taught millions of boot camp grads what
+a<00:00:45.200><c> server</c><00:00:45.440><c> was</c><00:00:45.760><c> and</c><00:00:46.000><c> empowered</c><00:00:46.399><c> them</c><00:00:46.559><c> to</c><00:00:46.719><c> ship</c>
+
+00:00:46.950 --> 00:00:46.960 align:start position:0%
+a server was and empowered them to ship
+ 
+
+00:00:46.960 --> 00:00:49.190 align:start position:0%
+a server was and empowered them to ship
+less<00:00:47.280><c> JavaScript</c><00:00:47.760><c> to</c><00:00:47.920><c> the</c><00:00:48.160><c> client.</c><00:00:48.800><c> But</c><00:00:48.960><c> over</c>
+
+00:00:49.190 --> 00:00:49.200 align:start position:0%
+less JavaScript to the client. But over
+ 
+
+00:00:49.200 --> 00:00:51.190 align:start position:0%
+less JavaScript to the client. But over
+time,<00:00:49.520><c> as</c><00:00:49.840><c> React</c><00:00:50.239><c> itself</c><00:00:50.559><c> went</c><00:00:50.800><c> through</c><00:00:50.960><c> its</c>
+
+00:00:51.190 --> 00:00:51.200 align:start position:0%
+time, as React itself went through its
+ 
+
+00:00:51.200 --> 00:00:53.670 align:start position:0%
+time, as React itself went through its
+own<00:00:51.440><c> identity</c><00:00:51.760><c> crisis,</c><00:00:52.399><c> so</c><00:00:52.640><c> did</c><00:00:52.800><c> Next.</c><00:00:53.440><c> This</c>
+
+00:00:53.670 --> 00:00:53.680 align:start position:0%
+own identity crisis, so did Next. This
+ 
+
+00:00:53.680 --> 00:00:55.830 align:start position:0%
+own identity crisis, so did Next. This
+eventually<00:00:54.079><c> led</c><00:00:54.320><c> to</c><00:00:54.559><c> some</c><00:00:54.800><c> breaking</c><00:00:55.199><c> changes,</c>
+
+00:00:55.830 --> 00:00:55.840 align:start position:0%
+eventually led to some breaking changes,
+ 
+
+00:00:55.840 --> 00:00:56.869 align:start position:0%
+eventually led to some breaking changes,
+some<00:00:56.079><c> pretty</c><00:00:56.239><c> rough</c><00:00:56.559><c> security</c>
+
+00:00:56.869 --> 00:00:56.879 align:start position:0%
+some pretty rough security
+ 
+
+00:00:56.879 --> 00:00:58.869 align:start position:0%
+some pretty rough security
+vulnerabilities,<00:00:57.840><c> and</c><00:00:58.000><c> just</c><00:00:58.239><c> overall</c><00:00:58.640><c> bad</c>
+
+00:00:58.869 --> 00:00:58.879 align:start position:0%
+vulnerabilities, and just overall bad
+ 
+
+00:00:58.879 --> 00:01:00.869 align:start position:0%
+vulnerabilities, and just overall bad
+vibes<00:00:59.199><c> for</c><00:00:59.359><c> the</c><00:00:59.520><c> framework.</c><00:01:00.079><c> Then</c><00:01:00.320><c> last</c><00:01:00.559><c> year,</c>
+
+00:01:00.869 --> 00:01:00.879 align:start position:0%
+vibes for the framework. Then last year,
+ 
+
+00:01:00.879 --> 00:01:02.869 align:start position:0%
+vibes for the framework. Then last year,
+Tanner<00:01:01.359><c> came</c><00:01:01.520><c> along</c><00:01:01.760><c> and</c><00:01:02.000><c> said,</c><00:01:02.239><c> "What</c><00:01:02.559><c> if</c><00:01:02.719><c> we</c>
+
+00:01:02.869 --> 00:01:02.879 align:start position:0%
+Tanner came along and said, "What if we
+ 
+
+00:01:02.879 --> 00:01:04.630 align:start position:0%
+Tanner came along and said, "What if we
+could<00:01:02.960><c> have</c><00:01:03.120><c> a</c><00:01:03.359><c> React</c><00:01:03.760><c> framework</c><00:01:04.159><c> that</c><00:01:04.400><c> was</c>
+
+00:01:04.630 --> 00:01:04.640 align:start position:0%
+could have a React framework that was
+ 
+
+00:01:04.640 --> 00:01:06.789 align:start position:0%
+could have a React framework that was
+type<00:01:04.960><c> safe</c><00:01:05.439><c> server</c><00:01:05.920><c> first,</c><00:01:06.320><c> highly</c>
+
+00:01:06.789 --> 00:01:06.799 align:start position:0%
+type safe server first, highly
+ 
+
+00:01:06.799 --> 00:01:08.390 align:start position:0%
+type safe server first, highly
+performant,<00:01:07.360><c> but</c><00:01:07.600><c> without</c><00:01:07.920><c> all</c><00:01:08.000><c> the</c><00:01:08.159><c> heavy</c>
+
+00:01:08.390 --> 00:01:08.400 align:start position:0%
+performant, but without all the heavy
+ 
+
+00:01:08.400 --> 00:01:10.550 align:start position:0%
+performant, but without all the heavy
+abstractions?"<00:01:09.520><c> So</c><00:01:09.680><c> that's</c><00:01:09.920><c> what</c><00:01:10.080><c> he</c><00:01:10.240><c> built</c>
+
+00:01:10.550 --> 00:01:10.560 align:start position:0%
+abstractions?" So that's what he built
+ 
+
+00:01:10.560 --> 00:01:12.789 align:start position:0%
+abstractions?" So that's what he built
+and<00:01:10.799><c> it's</c><00:01:11.040><c> called</c><00:01:11.280><c> Tanstack</c><00:01:12.000><c> Start.</c><00:01:12.560><c> Creating</c>
+
+00:01:12.789 --> 00:01:12.799 align:start position:0%
+and it's called Tanstack Start. Creating
+ 
+
+00:01:12.799 --> 00:01:14.950 align:start position:0%
+and it's called Tanstack Start. Creating
+a<00:01:13.040><c> new</c><00:01:13.200><c> project</c><00:01:13.439><c> is</c><00:01:13.680><c> simple.</c><00:01:14.320><c> Just</c><00:01:14.560><c> run</c><00:01:14.720><c> this</c>
+
+00:01:14.950 --> 00:01:14.960 align:start position:0%
+a new project is simple. Just run this
+ 
+
+00:01:14.960 --> 00:01:16.870 align:start position:0%
+a new project is simple. Just run this
+command.<00:01:15.680><c> From</c><00:01:15.840><c> there,</c><00:01:16.159><c> you</c><00:01:16.400><c> can</c><00:01:16.479><c> choose</c><00:01:16.720><c> from</c>
+
+00:01:16.870 --> 00:01:16.880 align:start position:0%
+command. From there, you can choose from
+ 
+
+00:01:16.880 --> 00:01:18.390 align:start position:0%
+command. From there, you can choose from
+a<00:01:17.119><c> bunch</c><00:01:17.280><c> of</c><00:01:17.439><c> different</c><00:01:17.680><c> configuration</c>
+
+00:01:18.390 --> 00:01:18.400 align:start position:0%
+a bunch of different configuration
+ 
+
+00:01:18.400 --> 00:01:20.230 align:start position:0%
+a bunch of different configuration
+options<00:01:18.720><c> to</c><00:01:18.960><c> start</c><00:01:19.119><c> out</c><00:01:19.360><c> with.</c><00:01:19.680><c> But</c><00:01:19.920><c> once</c><00:01:20.080><c> you</c>
+
+00:01:20.230 --> 00:01:20.240 align:start position:0%
+options to start out with. But once you
+ 
+
+00:01:20.240 --> 00:01:21.830 align:start position:0%
+options to start out with. But once you
+do<00:01:20.400><c> that,</c><00:01:20.720><c> you'll</c><00:01:20.960><c> have</c><00:01:21.040><c> an</c><00:01:21.280><c> app</c><00:01:21.439><c> that</c><00:01:21.680><c> comes</c>
+
+00:01:21.830 --> 00:01:21.840 align:start position:0%
+do that, you'll have an app that comes
+ 
+
+00:01:21.840 --> 00:01:24.230 align:start position:0%
+do that, you'll have an app that comes
+out<00:01:22.000><c> of</c><00:01:22.159><c> the</c><00:01:22.320><c> box</c><00:01:22.640><c> with</c><00:01:22.960><c> VEST</c><00:01:23.520><c> for</c><00:01:23.759><c> testing,</c>
+
+00:01:24.230 --> 00:01:24.240 align:start position:0%
+out of the box with VEST for testing,
+ 
+
+00:01:24.240 --> 00:01:26.310 align:start position:0%
+out of the box with VEST for testing,
+the<00:01:24.400><c> Tailwind</c><00:01:24.960><c> for</c><00:01:25.119><c> styling,</c><00:01:25.680><c> tanstack</c>
+
+00:01:26.310 --> 00:01:26.320 align:start position:0%
+the Tailwind for styling, tanstack
+ 
+
+00:01:26.320 --> 00:01:28.230 align:start position:0%
+the Tailwind for styling, tanstack
+router<00:01:26.640><c> for</c><00:01:26.799><c> routing,</c><00:01:27.280><c> and</c><00:01:27.520><c> TypeScript</c><00:01:28.080><c> with</c>
+
+00:01:28.230 --> 00:01:28.240 align:start position:0%
+router for routing, and TypeScript with
+ 
+
+00:01:28.240 --> 00:01:30.469 align:start position:0%
+router for routing, and TypeScript with
+end<00:01:28.400><c> toend</c><00:01:28.720><c> type</c><00:01:29.040><c> safety.</c><00:01:29.600><c> If</c><00:01:29.840><c> you</c><00:01:29.920><c> have</c><00:01:30.080><c> logic</c>
+
+00:01:30.469 --> 00:01:30.479 align:start position:0%
+end toend type safety. If you have logic
+ 
+
+00:01:30.479 --> 00:01:32.230 align:start position:0%
+end toend type safety. If you have logic
+that<00:01:30.720><c> should</c><00:01:30.960><c> only</c><00:01:31.119><c> run</c><00:01:31.280><c> on</c><00:01:31.439><c> the</c><00:01:31.600><c> server,</c><00:01:32.000><c> like</c>
+
+00:01:32.230 --> 00:01:32.240 align:start position:0%
+that should only run on the server, like
+ 
+
+00:01:32.240 --> 00:01:34.149 align:start position:0%
+that should only run on the server, like
+if<00:01:32.400><c> you</c><00:01:32.560><c> want</c><00:01:32.640><c> to</c><00:01:32.880><c> connect</c><00:01:33.119><c> to</c><00:01:33.280><c> a</c><00:01:33.439><c> database</c><00:01:33.920><c> or</c>
+
+00:01:34.149 --> 00:01:34.159 align:start position:0%
+if you want to connect to a database or
+ 
+
+00:01:34.159 --> 00:01:35.990 align:start position:0%
+if you want to connect to a database or
+work<00:01:34.320><c> with</c><00:01:34.479><c> the</c><00:01:34.720><c> file</c><00:01:34.960><c> system</c><00:01:35.280><c> or</c><00:01:35.520><c> environment</c>
+
+00:01:35.990 --> 00:01:36.000 align:start position:0%
+work with the file system or environment
+ 
+
+00:01:36.000 --> 00:01:37.830 align:start position:0%
+work with the file system or environment
+variables,<00:01:36.799><c> you</c><00:01:36.960><c> can</c><00:01:37.119><c> create</c><00:01:37.280><c> a</c><00:01:37.520><c> server</c>
+
+00:01:37.830 --> 00:01:37.840 align:start position:0%
+variables, you can create a server
+ 
+
+00:01:37.840 --> 00:01:39.670 align:start position:0%
+variables, you can create a server
+function<00:01:38.320><c> that</c><00:01:38.560><c> can</c><00:01:38.720><c> be</c><00:01:38.880><c> used</c><00:01:39.119><c> anywhere</c><00:01:39.439><c> in</c>
+
+00:01:39.670 --> 00:01:39.680 align:start position:0%
+function that can be used anywhere in
+ 
+
+00:01:39.680 --> 00:01:41.510 align:start position:0%
+function that can be used anywhere in
+your<00:01:39.840><c> app</c><00:01:40.079><c> and</c><00:01:40.240><c> it'll</c><00:01:40.560><c> maintain</c><00:01:40.880><c> type</c><00:01:41.200><c> safety</c>
+
+00:01:41.510 --> 00:01:41.520 align:start position:0%
+your app and it'll maintain type safety
+ 
+
+00:01:41.520 --> 00:01:43.429 align:start position:0%
+your app and it'll maintain type safety
+across<00:01:41.840><c> the</c><00:01:42.079><c> network.</c><00:01:42.479><c> And</c><00:01:42.640><c> because</c><00:01:43.040><c> start</c><00:01:43.280><c> is</c>
+
+00:01:43.429 --> 00:01:43.439 align:start position:0%
+across the network. And because start is
+ 
+
+00:01:43.439 --> 00:01:45.749 align:start position:0%
+across the network. And because start is
+built<00:01:43.600><c> on</c><00:01:43.759><c> Tanstack</c><00:01:44.400><c> router</c><00:01:44.799><c> which</c><00:01:45.040><c> uses</c><00:01:45.439><c> file</c>
+
+00:01:45.749 --> 00:01:45.759 align:start position:0%
+built on Tanstack router which uses file
+ 
+
+00:01:45.759 --> 00:01:47.670 align:start position:0%
+built on Tanstack router which uses file
+system<00:01:46.159><c> based</c><00:01:46.399><c> routes</c><00:01:46.880><c> if</c><00:01:47.040><c> you</c><00:01:47.119><c> want</c><00:01:47.280><c> to</c><00:01:47.360><c> add</c><00:01:47.520><c> a</c>
+
+00:01:47.670 --> 00:01:47.680 align:start position:0%
+system based routes if you want to add a
+ 
+
+00:01:47.680 --> 00:01:49.350 align:start position:0%
+system based routes if you want to add a
+new<00:01:47.840><c> route</c><00:01:48.079><c> to</c><00:01:48.240><c> your</c><00:01:48.399><c> app.</c><00:01:48.720><c> You</c><00:01:48.880><c> just</c><00:01:49.040><c> create</c><00:01:49.200><c> a</c>
+
+00:01:49.350 --> 00:01:49.360 align:start position:0%
+new route to your app. You just create a
+ 
+
+00:01:49.360 --> 00:01:51.109 align:start position:0%
+new route to your app. You just create a
+new<00:01:49.520><c> file</c><00:01:49.759><c> in</c><00:01:50.000><c> the</c><00:01:50.079><c> routes</c><00:01:50.399><c> directory.</c><00:01:50.960><c> From</c>
+
+00:01:51.109 --> 00:01:51.119 align:start position:0%
+new file in the routes directory. From
+ 
+
+00:01:51.119 --> 00:01:53.429 align:start position:0%
+new file in the routes directory. From
+there<00:01:51.520><c> you</c><00:01:51.680><c> can</c><00:01:51.840><c> also</c><00:01:52.159><c> specify</c><00:01:52.640><c> any</c><00:01:52.960><c> data</c><00:01:53.280><c> that</c>
+
+00:01:53.429 --> 00:01:53.439 align:start position:0%
+there you can also specify any data that
+ 
+
+00:01:53.439 --> 00:01:55.350 align:start position:0%
+there you can also specify any data that
+route<00:01:53.759><c> needs</c><00:01:54.079><c> using</c><00:01:54.320><c> a</c><00:01:54.560><c> loader.</c><00:01:55.040><c> And</c><00:01:55.119><c> that</c>
+
+00:01:55.350 --> 00:01:55.360 align:start position:0%
+route needs using a loader. And that
+ 
+
+00:01:55.360 --> 00:01:56.950 align:start position:0%
+route needs using a loader. And that
+data<00:01:55.600><c> will</c><00:01:55.840><c> be</c><00:01:56.000><c> available</c><00:01:56.320><c> to</c><00:01:56.479><c> the</c><00:01:56.640><c> route</c>
+
+00:01:56.950 --> 00:01:56.960 align:start position:0%
+data will be available to the route
+ 
+
+00:01:56.960 --> 00:01:58.630 align:start position:0%
+data will be available to the route
+before<00:01:57.200><c> it's</c><00:01:57.439><c> rendered.</c><00:01:57.920><c> And</c><00:01:58.079><c> if</c><00:01:58.240><c> you</c><00:01:58.399><c> want</c><00:01:58.479><c> to</c>
+
+00:01:58.630 --> 00:01:58.640 align:start position:0%
+before it's rendered. And if you want to
+ 
+
+00:01:58.640 --> 00:02:00.709 align:start position:0%
+before it's rendered. And if you want to
+create<00:01:58.880><c> an</c><00:01:59.119><c> API</c><00:01:59.520><c> route</c><00:01:59.840><c> for</c><00:02:00.000><c> handling</c><00:02:00.399><c> raw</c>
+
+00:02:00.709 --> 00:02:00.719 align:start position:0%
+create an API route for handling raw
+ 
+
+00:02:00.719 --> 00:02:03.109 align:start position:0%
+create an API route for handling raw
+HTTP<00:02:01.439><c> requests,</c><00:02:02.159><c> you</c><00:02:02.320><c> can</c><00:02:02.479><c> do</c><00:02:02.560><c> that</c><00:02:02.799><c> with</c><00:02:02.960><c> the</c>
+
+00:02:03.109 --> 00:02:03.119 align:start position:0%
+HTTP requests, you can do that with the
+ 
+
+00:02:03.119 --> 00:02:05.350 align:start position:0%
+HTTP requests, you can do that with the
+same<00:02:03.360><c> create</c><00:02:03.680><c> file</c><00:02:04.000><c> route</c><00:02:04.240><c> API</c><00:02:04.799><c> but</c><00:02:05.040><c> with</c><00:02:05.200><c> the</c>
+
+00:02:05.350 --> 00:02:05.360 align:start position:0%
+same create file route API but with the
+ 
+
+00:02:05.360 --> 00:02:07.590 align:start position:0%
+same create file route API but with the
+server<00:02:05.680><c> property.</c><00:02:06.479><c> This</c><00:02:06.640><c> has</c><00:02:06.719><c> been</c><00:02:06.880><c> tan</c><00:02:07.200><c> stack</c>
+
+00:02:07.590 --> 00:02:07.600 align:start position:0%
+server property. This has been tan stack
+ 
+
+00:02:07.600 --> 00:02:09.749 align:start position:0%
+server property. This has been tan stack
+start<00:02:07.840><c> in</c><00:02:08.160><c> 100</c><00:02:08.560><c> seconds.</c><00:02:09.119><c> If</c><00:02:09.280><c> you</c><00:02:09.440><c> want</c><00:02:09.520><c> to</c><00:02:09.599><c> see</c>
+
+00:02:09.749 --> 00:02:09.759 align:start position:0%
+start in 100 seconds. If you want to see
+ 
+
+00:02:09.759 --> 00:02:11.430 align:start position:0%
+start in 100 seconds. If you want to see
+more<00:02:10.000><c> videos</c><00:02:10.239><c> like</c><00:02:10.479><c> this,</c><00:02:10.879><c> let</c><00:02:11.039><c> me</c><00:02:11.120><c> know</c><00:02:11.280><c> what</c>
+
+00:02:11.430 --> 00:02:11.440 align:start position:0%
+more videos like this, let me know what
+ 
+
+00:02:11.440 --> 00:02:12.630 align:start position:0%
+more videos like this, let me know what
+you<00:02:11.599><c> want</c><00:02:11.656><c> [music]</c><00:02:11.680><c> to</c><00:02:11.760><c> learn</c><00:02:11.920><c> about</c><00:02:12.160><c> next</c><00:02:12.400><c> in</c>
+
+00:02:12.630 --> 00:02:12.640 align:start position:0%
+you want [music] to learn about next in
+ 
+
+00:02:12.640 --> 00:02:14.470 align:start position:0%
+you want [music] to learn about next in
+the<00:02:12.800><c> comments.</c><00:02:13.280><c> Thanks</c><00:02:13.520><c> for</c><00:02:13.760><c> watching</c><00:02:14.080><c> and</c><00:02:14.319><c> I</c>
+
+00:02:14.470 --> 00:02:14.480 align:start position:0%
+the comments. Thanks for watching and I
+ 
+
+00:02:14.480 --> 00:02:18.360 align:start position:0%
+the comments. Thanks for watching and I
+will<00:02:14.640><c> see</c><00:02:14.800><c> you</c><00:02:14.879><c> in</c><00:02:15.120><c> the</c><00:02:15.200><c> next</c><00:02:15.360><c> one.</c>
+

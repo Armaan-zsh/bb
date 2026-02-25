@@ -53,26 +53,8 @@ export default function ReaderModal({ post, onClose }: ReaderModalProps) {
                 className="reader-content"
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className="reader-header">
-                    <button className="reader-back" onClick={onClose}>
-                        <span style={{ fontSize: 20 }}>←</span>
-                        <span>Feed</span>
-                    </button>
-                    <div className="reader-actions">
-                        <button
-                            className="reader-action-btn"
-                            onClick={() => {
-                                navigator.clipboard.writeText(post?.url || '');
-                            }}
-                            title="Copy Link"
-                        >
-                            <span style={{ fontSize: 18 }}>🔗</span>
-                        </button>
-                        <button className="reader-action-btn" onClick={onClose}>
-                            <span style={{ fontSize: 18 }}>×</span>
-                        </button>
-                    </div>
-                </div>
+
+
 
                 <div className="reader-scroll-area">
                     {loading ? (

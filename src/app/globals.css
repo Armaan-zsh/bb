@@ -874,32 +874,32 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
-  padding-bottom: 16px;
-  border-bottom: 1px dashed var(--border);
+  margin-bottom: 24px;
+  padding: 4px 0;
 }
 
 .reader-back {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   background: transparent;
   border: none;
   color: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 13px;
   cursor: pointer;
-  padding: 0;
-  transition: color 0.2s;
+  padding: 6px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.15s;
+  line-height: 0;
 }
 
 .reader-back:hover {
   color: var(--text);
+  background: var(--surface-hover, rgba(255, 255, 255, 0.06));
 }
 
 .reader-actions {
   display: flex;
-  gap: 16px;
+  gap: 4px;
   align-items: center;
 }
 
@@ -908,16 +908,18 @@ a {
   border: none;
   color: var(--text-faint);
   cursor: pointer;
-  padding: 0;
+  padding: 6px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s, transform 0.2s;
+  transition: color 0.2s, background 0.15s;
+  line-height: 0;
 }
 
 .reader-action-btn:hover {
   color: var(--text);
-  transform: scale(1.1);
+  background: var(--surface-hover, rgba(255, 255, 255, 0.06));
 }
 
 .reader-meta {

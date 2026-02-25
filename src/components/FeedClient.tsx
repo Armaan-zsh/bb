@@ -240,8 +240,8 @@ export default function FeedClient({ initialPosts, totalPosts, category: initial
                         </div>
                     )}
                 </div>
-            </main >
-            <Footer />
+            </main>
+
 
             {readingPost && (
                 <ReaderModal

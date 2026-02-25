@@ -526,13 +526,12 @@ a {
 
 .badge-elite {
   font-size: 9px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
-  background: transparent;
-  border: 1px solid var(--border-strong);
-  padding: 2px 8px;
+  color: #fff;
+  background: #c0392b;
+  padding: 3px 8px;
   border-radius: 4px;
 }
 

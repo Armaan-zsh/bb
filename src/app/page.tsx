@@ -7,10 +7,12 @@ export const dynamic = 'force-dynamic';
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const category = typeof searchParams.category === 'string' ? searchParams.category : 'all';
-  const query = typeof searchParams.q === 'string' ? searchParams.q : '';
+  const params = await searchParams;
+  const category = typeof params.category === 'string' ? params.category : 'all';
+  const query = typeof params.q === 'string' ? params.q : '';
+
 
   const { posts, total } = await getPosts({
     page: 1,

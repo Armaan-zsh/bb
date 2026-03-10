@@ -1,81 +1,4 @@
-import Database from 'better-sqlite3';
-import path from 'path';
-import fs from 'fs';
-
-const DB_PATH = path.join(process.cwd(), 'data', 'feeds.db');
-
-let _db: Database.Database | null = null;
-
-export function getDb(): Database.Database {
-  if (_db) return _db;
-
-  // Ensure data directory exists
-  const dir = path.dirname(DB_PATH);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-
-  _db = new Database(DB_PATH);
-  _db.pragma('journal_mode = WAL');
-  _db.pragma('synchronous = NORMAL');
-  _db.pragma('foreign_keys = ON');
-
-  initSchema(_db);
-  return _db;
-}
-
-function initSchema(db: Database.Database) {
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS sources (
-      id          INTEGER PRIMARY KEY AUTOINCREMENT,
-      name        TEXT NOT NULL,
-      url         TEXT NOT NULL UNIQUE,
-      category    TEXT NOT NULL DEFAULT 'misc',
-      tier        INTEGER NOT NULL DEFAULT 2,
-      last_fetched TEXT,
-      post_count  INTEGER DEFAULT 0,
-      active      INTEGER DEFAULT 1
-    );
-
-    CREATE TABLE IF NOT EXISTS posts (
-      id           INTEGER PRIMARY KEY AUTOINCREMENT,
-      source_id    INTEGER NOT NULL REFERENCES sources(id),
-      title        TEXT NOT NULL,
-      url          TEXT NOT NULL UNIQUE,
-      excerpt      TEXT,
-      content      TEXT,
-      published_at TEXT,
-      fetched_at   TEXT NOT NULL DEFAULT (datetime('now')),
-      FOREIGN KEY (source_id) REFERENCES sources(id) ON DELETE CASCADE
-    );
-
-    -- FTS5 virtual table for full-text search
-    CREATE VIRTUAL TABLE IF NOT EXISTS posts_fts USING fts5(
-      title,
-      excerpt,
-      content,
-      content=posts,
-      content_rowid=id
-    );
-
-    -- Keep FTS index in sync
-    CREATE TRIGGER IF NOT EXISTS posts_ai AFTER INSERT ON posts BEGIN
-      INSERT INTO posts_fts(rowid, title, excerpt, content) VALUES (new.id, new.title, new.excerpt, new.content);
-    END;
-    CREATE TRIGGER IF NOT EXISTS posts_ad AFTER DELETE ON posts BEGIN
-      INSERT INTO posts_fts(posts_fts, rowid, title, excerpt, content) VALUES ('delete', old.id, old.title, old.excerpt, old.content);
-    END;
-    CREATE TRIGGER IF NOT EXISTS posts_au AFTER UPDATE ON posts BEGIN
-      INSERT INTO posts_fts(posts_fts, rowid, title, excerpt, content) VALUES ('delete', old.id, old.title, old.excerpt, old.content);
-      INSERT INTO posts_fts(rowid, title, excerpt, content) VALUES (new.id, new.title, new.excerpt, new.content);
-    END;
-
-    CREATE INDEX IF NOT EXISTS idx_posts_source ON posts(source_id);
-    CREATE INDEX IF NOT EXISTS idx_posts_published ON posts(published_at DESC);
-    CREATE INDEX IF NOT EXISTS idx_sources_category ON sources(category);
-    CREATE INDEX IF NOT EXISTS idx_sources_tier ON sources(tier);
-  `);
-}
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 export interface PostRow {
   id: number;
@@ -110,81 +33,80 @@ export interface GetPostsOptions {
   sourceId?: number;
 }
 
-export function getPosts(opts: GetPostsOptions = {}): { posts: PostRow[]; total: number } {
-  const db = getDb();
+export async function getDb() {
+  const { env } = await getCloudflareContext();
+  return (env as any).DB;
+}
+
+export async function getPosts(opts: GetPostsOptions = {}): Promise<{ posts: PostRow[]; total: number }> {
+  const db = await getDb();
   const { page = 1, limit = 24, category, tier, q, sourceId } = opts;
   const offset = (page - 1) * limit;
 
+  const { sql: whereSql, params: whereParams } = buildWhere({ category, tier, sourceId });
+  const whereClause = whereSql ? 'WHERE ' + whereSql : '';
+
   if (q && q.trim()) {
-    // FTS search path
-    const query = q.trim().replace(/['"*]/g, '') + '*';
-    const baseWhere = buildWhere({ category, tier, sourceId });
-
-    const posts = db.prepare(`
+    const query = '%' + q.trim() + '%';
+    const posts = await db.prepare(`
       SELECT p.*, s.name as source_name, s.category as source_category, s.tier as source_tier
-      FROM posts_fts f
-      JOIN posts p ON p.id = f.rowid
+      FROM posts p
       JOIN sources s ON s.id = p.source_id
-      ${baseWhere.sql ? 'WHERE ' + baseWhere.sql : ''}
-      AND posts_fts MATCH ?
+      ${whereClause ? whereClause + ' AND' : 'WHERE'}
+      (p.title LIKE ?1 OR p.excerpt LIKE ?1)
       ORDER BY p.published_at DESC
-      LIMIT ? OFFSET ?
-    `).all(...baseWhere.params, query, limit, offset) as PostRow[];
+      LIMIT ?2 OFFSET ?3
+    `).bind(...whereParams, query, limit, offset).all<PostRow>();
 
-    const { count } = db.prepare(`
-      SELECT COUNT(*) as count
-      FROM posts_fts f
-      JOIN posts p ON p.id = f.rowid
+    const countResult = await db.prepare(`
+      SELECT COUNT(*) as count FROM posts p
       JOIN sources s ON s.id = p.source_id
-      ${baseWhere.sql ? 'WHERE ' + baseWhere.sql : ''}
-      AND posts_fts MATCH ?
-    `).get(...baseWhere.params, query) as { count: number };
+      ${whereClause ? whereClause + ' AND' : 'WHERE'}
+      (p.title LIKE ?1 OR p.excerpt LIKE ?1)
+    `).bind(...whereParams, query).first<{ count: number }>();
 
-    return { posts, total: count };
+    return { posts: posts.results, total: countResult?.count ?? 0 };
   }
 
-  const where = buildWhere({ category, tier, sourceId });
-  const whereClause = where.sql ? 'WHERE ' + where.sql : '';
-
-  // Use a CTE with ROW_NUMBER() to implement per-source diversity logic
-  // We only apply the per-source limit when we are in the "Elite 15" view (limit <= 24 and tier=1)
+  // Elite view: per-source diversity
   const isEliteView = (limit <= 24 && tier === 1 && !category && !q);
-  const sourceLimit = 2; // Max posts per source in elite view
+  const sourceLimit = 2;
 
-  let querySql = `
-        SELECT p.*, s.name as source_name, s.category as source_category, s.tier as source_tier
+  let querySql: string;
+  if (isEliteView) {
+    querySql = `
+      WITH RankedPosts AS (
+        SELECT p.*, s.name as source_name, s.category as source_category, s.tier as source_tier,
+               ROW_NUMBER() OVER (PARTITION BY p.source_id ORDER BY p.published_at DESC) as rank
         FROM posts p
         JOIN sources s ON s.id = p.source_id
         ${whereClause}
-        ORDER BY p.published_at DESC
-        LIMIT ? OFFSET ?
+      )
+      SELECT * FROM RankedPosts
+      WHERE rank <= ${sourceLimit}
+      ORDER BY published_at DESC
+      LIMIT ? OFFSET ?
     `;
-
-  if (isEliteView) {
+  } else {
     querySql = `
-            WITH RankedPosts AS (
-                SELECT p.*, s.name as source_name, s.category as source_category, s.tier as source_tier,
-                       ROW_NUMBER() OVER (PARTITION BY p.source_id ORDER BY p.published_at DESC) as rank
-                FROM posts p
-                JOIN sources s ON s.id = p.source_id
-                ${whereClause}
-            )
-            SELECT * FROM RankedPosts
-            WHERE rank <= ${sourceLimit}
-            ORDER BY published_at DESC
-            LIMIT ? OFFSET ?
-        `;
+      SELECT p.*, s.name as source_name, s.category as source_category, s.tier as source_tier
+      FROM posts p
+      JOIN sources s ON s.id = p.source_id
+      ${whereClause}
+      ORDER BY p.published_at DESC
+      LIMIT ? OFFSET ?
+    `;
   }
 
-  const posts = db.prepare(querySql).all(...where.params, limit, offset) as PostRow[];
+  const posts = await db.prepare(querySql).bind(...whereParams, limit, offset).all<PostRow>();
 
-  const { count } = db.prepare(`
+  const countResult = await db.prepare(`
     SELECT COUNT(*) as count FROM posts p
     JOIN sources s ON s.id = p.source_id
     ${whereClause}
-  `).get(...where.params) as { count: number };
+  `).bind(...whereParams).first<{ count: number }>();
 
-  return { posts, total: count };
+  return { posts: posts.results, total: countResult?.count ?? 0 };
 }
 
 function buildWhere(opts: { category?: string; tier?: number; sourceId?: number }) {
@@ -207,45 +129,50 @@ function buildWhere(opts: { category?: string; tier?: number; sourceId?: number 
   return { sql: conditions.join(' AND '), params };
 }
 
-export function getSources(): SourceRow[] {
-  const db = getDb();
-  return db.prepare(`
+export async function getSources(): Promise<SourceRow[]> {
+  const db = await getDb();
+  const result = await db.prepare(`
     SELECT s.*, COUNT(p.id) as post_count
     FROM sources s
     LEFT JOIN posts p ON p.source_id = s.id
     WHERE s.active = 1
     GROUP BY s.id
     ORDER BY s.tier ASC, s.name ASC
-  `).all() as SourceRow[];
+  `).all<SourceRow>();
+  return result.results;
 }
 
-export function getSource(id: number): SourceRow | undefined {
-  const db = getDb();
-  return db.prepare('SELECT * FROM sources WHERE id = ?').get(id) as SourceRow | undefined;
+export async function getSource(id: number): Promise<SourceRow | undefined> {
+  const db = await getDb();
+  const result = await db.prepare('SELECT * FROM sources WHERE id = ?').bind(id).first<SourceRow>();
+  return result ?? undefined;
 }
 
-export function getTotalStats() {
-  const db = getDb();
-  const { count: postCount } = db.prepare('SELECT COUNT(*) as count FROM posts').get() as { count: number };
-  const { count: sourceCount } = db.prepare('SELECT COUNT(*) as count FROM sources WHERE active = 1').get() as { count: number };
-  const lastFetched = db.prepare('SELECT MAX(fetched_at) as t FROM posts').get() as { t: string | null };
-  return { postCount, sourceCount, lastFetched: lastFetched.t };
+export async function getTotalStats() {
+  const db = await getDb();
+  const postCount = await db.prepare('SELECT COUNT(*) as count FROM posts').first<{ count: number }>();
+  const sourceCount = await db.prepare('SELECT COUNT(*) as count FROM sources WHERE active = 1').first<{ count: number }>();
+  const lastFetched = await db.prepare('SELECT MAX(fetched_at) as t FROM posts').first<{ t: string | null }>();
+  return {
+    postCount: postCount?.count ?? 0,
+    sourceCount: sourceCount?.count ?? 0,
+    lastFetched: lastFetched?.t ?? null,
+  };
 }
 
-export function purgePosts(days: number = 30) {
-  const db = getDb();
-  const result = db.prepare("DELETE FROM posts WHERE published_at < datetime('now', '-' || ? || ' days')").run(days);
-  db.prepare("INSERT INTO posts_fts(posts_fts) VALUES('optimize')").run();
-  return result.changes;
+export async function purgePosts(days: number = 30): Promise<number> {
+  const db = await getDb();
+  const result = await db.prepare("DELETE FROM posts WHERE published_at < datetime('now', '-' || ? || ' days')").bind(days).run();
+  return result.meta?.changes ?? 0;
 }
 
-export function getTrendingKeywords(limit: number = 8) {
-  const db = getDb();
-  const rows = db.prepare(`
-        SELECT title FROM posts 
-        WHERE published_at > datetime('now', '-2 days')
-    `).all() as { title: string }[];
+export async function getTrendingKeywords(limit: number = 8): Promise<string[]> {
+  const db = await getDb();
+  const result = await db.prepare(`
+    SELECT title FROM posts
+    WHERE published_at > datetime('now', '-2 days')
+  `).all<{ title: string }>();
 
   const { rankKeywords } = require('./pulse');
-  return rankKeywords(rows.map(r => r.title)).slice(0, limit);
+  return rankKeywords(result.results.map((r: { title: string }) => r.title)).slice(0, limit);
 }

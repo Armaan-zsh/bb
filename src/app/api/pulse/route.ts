@@ -5,8 +5,8 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
     try {
-        const stats = getTotalStats();
-        const keywords = getTrendingKeywords(8);
+        const stats = await getTotalStats();
+        const keywords = await getTrendingKeywords(8);
 
         return NextResponse.json({
             stats,

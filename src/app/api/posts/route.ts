@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
         const q = searchParams.get('q') ?? undefined;
         const sourceId = searchParams.get('sourceId') ? parseInt(searchParams.get('sourceId')!) : undefined;
 
-        const { posts, total } = getPosts({ page, limit, category, tier, q, sourceId });
+        const { posts, total } = await getPosts({ page, limit, category, tier, q, sourceId });
 
         return NextResponse.json({
             posts,

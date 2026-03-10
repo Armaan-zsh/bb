@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { JSDOM } from 'jsdom';
+import { parseHTML } from 'linkedom';
 import { Readability } from '@mozilla/readability';
+
+export const runtime = 'edge';
 
 export async function GET(req: NextRequest) {
     const url = req.nextUrl.searchParams.get('url');
@@ -26,8 +28,14 @@ export async function GET(req: NextRequest) {
         }
 
         const html = await res.text();
-        const dom = new JSDOM(html, { url });
-        const reader = new Readability(dom.window.document);
+        const { document } = parseHTML(html);
+
+        // Set the base URL for relative links
+        const base = document.createElement('base');
+        base.setAttribute('href', url);
+        document.head.appendChild(base);
+
+        const reader = new Readability(document as any);
         const article = reader.parse();
 
         if (!article || !article.content) {

@@ -1,6 +1,6 @@
 {
   "name": "the-feed",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,24 +9,23 @@
     "lint": "eslint",
     "seed": "tsx scripts/seed.ts",
     "seed:t1": "tsx scripts/seed.ts --tier=1",
-    "seed:t2": "tsx scripts/seed.ts --tier=2"
+    "seed:t2": "tsx scripts/seed.ts --tier=2",
+    "refresh": "tsx scripts/seed.ts"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",
-    "@types/jsdom": "^27.0.0",
-    "better-sqlite3": "^11.10.0",
+    "@opennextjs/cloudflare": "^1.17.1",
     "date-fns": "^4.1.0",
     "html-to-text": "^9.0.5",
-    "jsdom": "^26.1.0",
-    "next": "^14.2.35",
+    "linkedom": "^0.18.12",
+    "next": "^15.5.12",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rss-parser": "^3.13.0",
-    "youtube-transcript": "^1.2.1",
-    "youtube-transcript-plus": "^1.2.0"
+    "wrangler": "^4.71.0"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.13",
+    "@cloudflare/workers-types": "^4.20260310.1",
     "@types/html-to-text": "^9.0.4",
     "@types/node": "^20",
     "@types/react": "^18.3.28",

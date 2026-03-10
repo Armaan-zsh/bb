@@ -1,0 +1,9 @@
+node_modules
+.next
+.git
+data
+*.db
+test-raw-yt.js
+test.json
+test_transcript.en.vtt
+debug-fetch.ts

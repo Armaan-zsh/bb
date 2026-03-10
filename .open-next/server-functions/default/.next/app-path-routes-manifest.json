@@ -1,0 +1,13 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/content/route": "/api/content",
+  "/favicon.ico/route": "/favicon.ico",
+  "/api/sources/route": "/api/sources",
+  "/api/pulse/route": "/api/pulse",
+  "/api/refresh/route": "/api/refresh",
+  "/api/posts/route": "/api/posts",
+  "/feed/page": "/feed",
+  "/source/[id]/page": "/source/[id]",
+  "/sources/page": "/sources",
+  "/page": "/"
+}

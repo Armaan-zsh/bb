@@ -1,0 +1,38 @@
+{
+  "name": "the-feed",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "seed": "tsx scripts/seed.ts",
+    "seed:t1": "tsx scripts/seed.ts --tier=1",
+    "seed:t2": "tsx scripts/seed.ts --tier=2",
+    "refresh": "tsx scripts/seed.ts"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "@opennextjs/cloudflare": "^1.17.1",
+    "date-fns": "^4.1.0",
+    "html-to-text": "^9.0.5",
+    "linkedom": "^0.18.12",
+    "next": "^15.5.12",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rss-parser": "^3.13.0",
+    "wrangler": "^4.71.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260310.1",
+    "@types/html-to-text": "^9.0.4",
+    "@types/node": "^20",
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.3.7",
+    "eslint": "^9",
+    "eslint-config-next": "^15.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  }
+}

@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { parseHTML } from 'linkedom';
 import { Readability } from '@mozilla/readability';
 
-export const runtime = 'edge';
-
 export async function GET(req: NextRequest) {
     const url = req.nextUrl.searchParams.get('url');
     if (!url) {

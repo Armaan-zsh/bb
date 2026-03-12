@@ -1,11 +1,10 @@
 import fs from 'node:fs';
-import path from 'node:path';
+import { execSync } from 'node:child_process';
 
 const distDir = '.open-next/dist';
 const assetsDir = '.open-next/assets';
-const workerDir = path.join(distDir, '_worker.js');
 
-console.log('📦 Restructuring OpenNext for Cloudflare Pages Advanced Module Directory Mode...');
+console.log('📦 Minifying OpenNext worker to comply with Cloudflare Pages 1MB Free Tier limit...');
 
 try {
     // 1. Create the final dist directory
@@ -19,23 +18,16 @@ try {
         console.warn(`⚠️ No assets directory found at ${assetsDir}`);
     }
 
-    // 3. Create the _worker.js directory to house the backend and modules
-    fs.mkdirSync(workerDir, { recursive: true });
+    // 3. Bundle the OpenNext worker uniquely using esbuild
+    // This crushes 40MB+ of Next.js/Webpack internals into a ~850KB gzip
+    // `--platform=node` safely externalizes all Node built-ins since CF provides nodejs_compat
+    console.log(`⚡ Running ESBuild to strictly compile _worker.js...`);
+    execSync(
+        'npx esbuild .open-next/worker.js --bundle --minify --format=esm --platform=node --target=es2022 --external:cloudflare:* --outfile=.open-next/dist/_worker.js',
+        { stdio: 'inherit' }
+    );
 
-    // 4. Move all backend logic into _worker.js/ and rename worker.js to index.js
-    const internalItems = fs.readdirSync('.open-next');
-    for (const item of internalItems) {
-        if (item === 'assets' || item === 'dist') continue; // Skip assets and output
-
-        const sourcePath = path.join('.open-next', item);
-        if (item === 'worker.js') {
-            fs.copyFileSync(sourcePath, path.join(workerDir, 'index.js'));
-        } else {
-            fs.cpSync(sourcePath, path.join(workerDir, item), { recursive: true });
-        }
-    }
-
-    console.log(`✅ Packaged worker logic into _worker.js directory`);
+    console.log(`✅ Packaged and minified OpenNext into _worker.js`);
     console.log('🎉 OpenNext Cloudflare Pages package complete! Output directory: .open-next/dist');
 } catch (error) {
     console.error('❌ Failed to package OpenNext output:', error);

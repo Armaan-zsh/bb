@@ -10,7 +10,8 @@
     "seed": "tsx scripts/seed.ts",
     "seed:t1": "tsx scripts/seed.ts --tier=1",
     "seed:t2": "tsx scripts/seed.ts --tier=2",
-    "refresh": "tsx scripts/seed.ts"
+    "refresh": "tsx scripts/seed.ts",
+    "build:pages": "npx @opennextjs/cloudflare build && node build-pages.mjs"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",

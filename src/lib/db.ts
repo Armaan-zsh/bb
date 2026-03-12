@@ -1,5 +1,6 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { rankKeywords } from './pulse';
+import type { D1Database } from '@cloudflare/workers-types';
 
 export interface PostRow {
   id: number;
@@ -34,9 +35,9 @@ export interface GetPostsOptions {
   sourceId?: number;
 }
 
-export async function getDb() {
+export async function getDb(): Promise<D1Database> {
   const { env } = await getCloudflareContext();
-  const db = (env as any).DB;
+  const db = (env as any).DB as D1Database;
   if (!db) {
     throw new Error('D1 binding "DB" not found. Please ensure it is configured in the Cloudflare Pages settings (Settings > Functions > D1 database bindings).');
   }

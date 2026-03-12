@@ -1,4 +1,5 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
+import { rankKeywords } from './pulse';
 
 export interface PostRow {
   id: number;
@@ -35,7 +36,11 @@ export interface GetPostsOptions {
 
 export async function getDb() {
   const { env } = await getCloudflareContext();
-  return (env as any).DB;
+  const db = (env as any).DB;
+  if (!db) {
+    throw new Error('D1 binding "DB" not found. Please ensure it is configured in the Cloudflare Pages settings (Settings > Functions > D1 database bindings).');
+  }
+  return db;
 }
 
 export async function getPosts(opts: GetPostsOptions = {}): Promise<{ posts: PostRow[]; total: number }> {
@@ -173,6 +178,5 @@ export async function getTrendingKeywords(limit: number = 8): Promise<string[]> 
     WHERE published_at > datetime('now', '-2 days')
   `).all<{ title: string }>();
 
-  const { rankKeywords } = require('./pulse');
   return rankKeywords(result.results.map((r: { title: string }) => r.title)).slice(0, limit);
 }

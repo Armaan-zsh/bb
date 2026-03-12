@@ -19,11 +19,11 @@ try {
     }
 
     // 3. Bundle the OpenNext worker uniquely using esbuild
-    // This crushes 40MB+ of Next.js/Webpack internals into a ~850KB gzip
-    // `--platform=node` safely externalizes all Node built-ins since CF provides nodejs_compat
+    // We disable minifyIdentifiers because it can break OpenNext internals
+    // but keep other minification to stay under 1MB.
     console.log(`⚡ Running ESBuild to strictly compile _worker.js...`);
     execSync(
-        'npx esbuild .open-next/worker.js --bundle --minify --format=esm --platform=node --target=es2022 --external:cloudflare:* --outfile=.open-next/dist/_worker.js',
+        'npx esbuild .open-next/worker.js --bundle --minify-whitespace --minify-syntax --format=esm --platform=node --target=es2022 --external:cloudflare:* --outfile=.open-next/dist/_worker.js',
         { stdio: 'inherit' }
     );
 

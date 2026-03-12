@@ -23,7 +23,7 @@ try {
     // but keep other minification to stay under 1MB.
     console.log(`⚡ Running ESBuild to strictly compile _worker.js...`);
     execSync(
-        'npx esbuild .open-next/worker.js --bundle --minify-whitespace --minify-syntax --format=esm --platform=node --target=es2022 --external:cloudflare:* --outfile=.open-next/dist/_worker.js',
+        'npx esbuild .open-next/worker.js --bundle --minify-whitespace --minify-syntax --format=esm --platform=node --target=es2022 --external:cloudflare:* --external:node:* --outfile=.open-next/dist/_worker.js',
         { stdio: 'inherit' }
     );
 

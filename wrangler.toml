@@ -1,9 +1,0 @@
-name = "bb"
-compatibility_date = "2025-01-01"
-compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = ".open-next/dist"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "bb-feed-db"
-database_id = "placeholder"

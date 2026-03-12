@@ -1,42 +1,41 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { execSync } from 'node:child_process';
 
 const distDir = '.open-next/dist';
 const assetsDir = '.open-next/assets';
-const bundledWorkerDir = 'dist-worker';
+const workerDir = path.join(distDir, '_worker.js');
 
-console.log('📦 Bundling OpenNext worker with Wrangler...');
+console.log('📦 Restructuring OpenNext for Cloudflare Pages Advanced Module Directory Mode...');
 
 try {
-    // Step 1: Pre-bundle the worker using Wrangler
-    // By using CI=true we auto-bypass the Pages Warning interactive prompt
-    execSync(`CI=true npx wrangler deploy --dry-run --outdir ${bundledWorkerDir}`, { stdio: 'inherit' });
-
-    // Create the final dist directory
+    // 1. Create the final dist directory
     fs.mkdirSync(distDir, { recursive: true });
 
-    // Copy all static assets into dist
+    // 2. Copy all static assets to the root of dist
     if (fs.existsSync(assetsDir)) {
         fs.cpSync(assetsDir, distDir, { recursive: true });
-        console.log(`✅ Copied static assets from ${assetsDir}`);
+        console.log(`✅ Copied static assets to root`);
     } else {
         console.warn(`⚠️ No assets directory found at ${assetsDir}`);
     }
 
-    // Copy and rename the fully bundled worker to _worker.js
-    const bundledWorker = path.join(bundledWorkerDir, 'worker.js');
-    if (fs.existsSync(bundledWorker)) {
-        fs.copyFileSync(bundledWorker, path.join(distDir, '_worker.js'));
-        console.log(`✅ Copied bundled worker to ${path.join(distDir, '_worker.js')}`);
-    } else {
-        console.error(`❌ Failed to find bundled worker at ${bundledWorker}`);
-        process.exit(1);
+    // 3. Create the _worker.js directory to house the backend and modules
+    fs.mkdirSync(workerDir, { recursive: true });
+
+    // 4. Move all backend logic into _worker.js/ and rename worker.js to index.js
+    const internalItems = fs.readdirSync('.open-next');
+    for (const item of internalItems) {
+        if (item === 'assets' || item === 'dist') continue; // Skip assets and output
+
+        const sourcePath = path.join('.open-next', item);
+        if (item === 'worker.js') {
+            fs.copyFileSync(sourcePath, path.join(workerDir, 'index.js'));
+        } else {
+            fs.cpSync(sourcePath, path.join(workerDir, item), { recursive: true });
+        }
     }
 
-    // Cleanup temporary bundled worker dir
-    fs.rmSync(bundledWorkerDir, { recursive: true, force: true });
-
+    console.log(`✅ Packaged worker logic into _worker.js directory`);
     console.log('🎉 OpenNext Cloudflare Pages package complete! Output directory: .open-next/dist');
 } catch (error) {
     console.error('❌ Failed to package OpenNext output:', error);

@@ -1,0 +1,7 @@
+name = "bb"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".open-next/dist"
+
+# NOTE: D1 Bindings should be configured in the Cloudflare Dashboard
+# to avoid "placeholder" UUID errors during deployment.
